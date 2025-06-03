@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.API\\Numerology.API.csproj": {}
+    "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.API\\Numerology.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.API\\Numerology.API.csproj": {
+    "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.API\\Numerology.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.API\\Numerology.API.csproj",
+        "projectUniqueName": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.API\\Numerology.API.csproj",
         "projectName": "Numerology.API",
-        "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.API\\Numerology.API.csproj",
+        "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.API\\Numerology.API.csproj",
         "packagesPath": "C:\\Users\\d\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.API\\obj\\",
+        "outputPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,11 +33,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
-                "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj"
+              "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
+                "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj"
               },
-              "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj"
+              "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj"
               }
             }
           }
@@ -108,14 +108,14 @@
         }
       }
     },
-    "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
+    "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj",
+        "projectUniqueName": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj",
         "projectName": "Numerology.Core",
-        "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj",
+        "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj",
         "packagesPath": "C:\\Users\\d\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\obj\\",
+        "outputPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -171,9 +171,13 @@
               "target": "Package",
               "version": "[8.0.2, )"
             },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
             "System.Linq.Dynamic.Core": {
               "target": "Package",
-              "version": "[1.5.1, )"
+              "version": "[1.6.0.2, )"
             }
           },
           "imports": [
@@ -196,14 +200,14 @@
         }
       }
     },
-    "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj": {
+    "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
         "projectName": "Numerology.Infrastructure",
-        "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\d\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -225,8 +229,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
-                "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj"
+              "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
+                "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj"
               }
             }
           }
@@ -266,10 +270,6 @@
             "System.Drawing.Common": {
               "target": "Package",
               "version": "[8.0.6, )"
-            },
-            "System.IdentityModel.Tokens.Jwt": {
-              "target": "Package",
-              "version": "[8.0.2, )"
             },
             "System.Net.Http": {
               "target": "Package",

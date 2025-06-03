@@ -1105,7 +1105,7 @@
           "lib/netstandard1.6/System.Linq.dll": {}
         }
       },
-      "System.Linq.Dynamic.Core/1.5.1": {
+      "System.Linq.Dynamic.Core/1.6.0.2": {
         "type": "package",
         "compile": {
           "lib/net8.0/System.Linq.Dynamic.Core.dll": {
@@ -1583,7 +1583,8 @@
           "Google.Apis.Auth": "1.68.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.2",
           "Microsoft.AspNetCore.Identity.UI": "8.0.2",
-          "System.Linq.Dynamic.Core": "1.5.1"
+          "System.IdentityModel.Tokens.Jwt": "8.0.2",
+          "System.Linq.Dynamic.Core": "1.6.0.2"
         },
         "compile": {
           "bin/placeholder/Numerology.Core.dll": {}
@@ -3731,10 +3732,10 @@
         "system.linq.nuspec"
       ]
     },
-    "System.Linq.Dynamic.Core/1.5.1": {
-      "sha512": "Uj3xYJHWFs1zXjTrTrPAB3KEPtUirYwFjCmYO+cqcNC/TM0GMjbHtvQYwSr8T3zv/BihVvcpiTOpzn/naVii4g==",
+    "System.Linq.Dynamic.Core/1.6.0.2": {
+      "sha512": "rtfRierS5ZjG4xBfDKerRPImwDbav7q2hgf88jUZKfIjQb16PIQqzFCpPVWMb+7fS2ECXnPSmmBbssPz7WUg6g==",
       "type": "package",
-      "path": "system.linq.dynamic.core/1.5.1",
+      "path": "system.linq.dynamic.core/1.6.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3789,7 +3790,7 @@
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.pri",
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.xml",
         "logo.png",
-        "system.linq.dynamic.core.1.5.1.nupkg.sha512",
+        "system.linq.dynamic.core.1.6.0.2.nupkg.sha512",
         "system.linq.dynamic.core.nuspec"
       ]
     },
@@ -4962,7 +4963,6 @@
       "QRCoder >= 1.5.0",
       "SendGrid >= 9.29.3",
       "System.Drawing.Common >= 8.0.6",
-      "System.IdentityModel.Tokens.Jwt >= 8.0.2",
       "System.Net.Http >= 4.3.4"
     ]
   },
@@ -4973,11 +4973,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
       "projectName": "Numerology.Infrastructure",
-      "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
+      "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\d\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\obj\\",
+      "outputPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4999,8 +4999,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
-              "projectPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj"
+            "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj": {
+              "projectPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Numerology.Core.csproj"
             }
           }
         }
@@ -5040,10 +5040,6 @@
           "System.Drawing.Common": {
             "target": "Package",
             "version": "[8.0.6, )"
-          },
-          "System.IdentityModel.Tokens.Jwt": {
-            "target": "Package",
-            "version": "[8.0.2, )"
           },
           "System.Net.Http": {
             "target": "Package",

@@ -16,10 +16,10 @@
             android:name=".AgentActivity"
             android:exported="false" />
         <activity
-            android:name=".agen"
+            android:name=".agent"
             android:exported="false" />
         <activity
-            android:name=".Agen"
+            android:name=".Agent"
             android:exported="false" />
         <activity
             android:name=".ProbabilityAnalysisActivity"

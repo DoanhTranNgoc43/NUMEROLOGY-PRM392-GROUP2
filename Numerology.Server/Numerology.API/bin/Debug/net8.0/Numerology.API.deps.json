@@ -1027,11 +1027,11 @@
           "System.Runtime.Extensions": "4.3.0"
         }
       },
-      "System.Linq.Dynamic.Core/1.5.1": {
+      "System.Linq.Dynamic.Core/1.6.0.2": {
         "runtime": {
           "lib/net8.0/System.Linq.Dynamic.Core.dll": {
-            "assemblyVersion": "1.5.1.0",
-            "fileVersion": "1.5.1.0"
+            "assemblyVersion": "1.6.0.2",
+            "fileVersion": "1.6.0.2"
           }
         }
       },
@@ -1322,7 +1322,8 @@
           "Google.Apis.Auth": "1.68.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.2",
           "Microsoft.AspNetCore.Identity.UI": "8.0.2",
-          "System.Linq.Dynamic.Core": "1.5.1"
+          "System.IdentityModel.Tokens.Jwt": "8.0.2",
+          "System.Linq.Dynamic.Core": "1.6.0.2"
         },
         "runtime": {
           "Numerology.Core.dll": {
@@ -1339,7 +1340,6 @@
           "QRCoder": "1.5.0",
           "SendGrid": "9.29.3",
           "System.Drawing.Common": "8.0.6",
-          "System.IdentityModel.Tokens.Jwt": "8.0.2",
           "System.Net.Http": "4.3.4"
         },
         "runtime": {
@@ -2078,12 +2078,12 @@
       "path": "system.linq/4.3.0",
       "hashPath": "system.linq.4.3.0.nupkg.sha512"
     },
-    "System.Linq.Dynamic.Core/1.5.1": {
+    "System.Linq.Dynamic.Core/1.6.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Uj3xYJHWFs1zXjTrTrPAB3KEPtUirYwFjCmYO+cqcNC/TM0GMjbHtvQYwSr8T3zv/BihVvcpiTOpzn/naVii4g==",
-      "path": "system.linq.dynamic.core/1.5.1",
-      "hashPath": "system.linq.dynamic.core.1.5.1.nupkg.sha512"
+      "sha512": "sha512-rtfRierS5ZjG4xBfDKerRPImwDbav7q2hgf88jUZKfIjQb16PIQqzFCpPVWMb+7fS2ECXnPSmmBbssPz7WUg6g==",
+      "path": "system.linq.dynamic.core/1.6.0.2",
+      "hashPath": "system.linq.dynamic.core.1.6.0.2.nupkg.sha512"
     },
     "System.Management/7.0.2": {
       "type": "package",

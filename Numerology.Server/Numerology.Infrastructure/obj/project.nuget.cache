@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nwRyP+S6rEA=",
+  "dgSpecHash": "lQ6LvON4ou0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Numerology.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\d\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\d\\.nuget\\packages\\google.apis\\1.68.0\\google.apis.1.68.0.nupkg.sha512",
@@ -76,7 +76,7 @@
     "C:\\Users\\d\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\d\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\d\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
-    "C:\\Users\\d\\.nuget\\packages\\system.linq.dynamic.core\\1.5.1\\system.linq.dynamic.core.1.5.1.nupkg.sha512",
+    "C:\\Users\\d\\.nuget\\packages\\system.linq.dynamic.core\\1.6.0.2\\system.linq.dynamic.core.1.6.0.2.nupkg.sha512",
     "C:\\Users\\d\\.nuget\\packages\\system.management\\7.0.2\\system.management.7.0.2.nupkg.sha512",
     "C:\\Users\\d\\.nuget\\packages\\system.net.http\\4.3.4\\system.net.http.4.3.4.nupkg.sha512",
     "C:\\Users\\d\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",
