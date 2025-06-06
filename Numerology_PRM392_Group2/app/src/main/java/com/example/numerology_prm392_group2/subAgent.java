@@ -3,6 +3,7 @@ package com.example.numerology_prm392_group2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -11,8 +12,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.numerology_prm392_group2.model.XSMBResult;
+import com.example.numerology_prm392_group2.service.NumerologyService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.List;
 
 public class subAgent extends AppCompatActivity {
 
@@ -36,6 +41,40 @@ public class subAgent extends AppCompatActivity {
 
         initViews();
         setupClickListeners();
+        callApiAndConsoleData();
+    }
+    private void callApiAndConsoleData() {
+        Log.d("API", "Starting API call...");
+        NumerologyService.getAllXSMBResults()
+                .thenAccept(response -> {
+                    runOnUiThread(() -> {
+                        // Console ra response
+                        Log.d("API", "=== RESPONSE ===");
+                        Log.d("API", "Status: " + response.getStatus());
+                        Log.d("API", "Message: " + response.getMessage());
+
+                        // Console ra data
+                        if (response.getData() != null) {
+                            List<XSMBResult> data = response.getData();
+                            Log.d("API", "Data size: " + data.size());
+                            System.out.println(data.size());
+                            // Console từng item
+                            for (int i = 0; i < data.size(); i++) {
+                                Log.d("DATA", "Item " + i + ": " + data.get(i).toString());
+                            }
+                        } else {
+                            Log.d("API", "Data is null");
+                        }
+                        Log.d("API", "=== END ===");
+                    });
+                })
+                .exceptionally(error -> {
+                    runOnUiThread(() -> {
+                        Log.e("API", "Error: " + error.getMessage());
+                        error.printStackTrace();
+                    });
+                    return null;
+                });
     }
 
     private void initViews() {
