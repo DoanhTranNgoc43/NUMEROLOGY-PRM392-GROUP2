@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Numerology.Core.Interfaces;
-using Numerology.Core.Models.DTOs.Auth;
 using Numerology.Core.Models.Entities;
+
 
 namespace Numerology.Core.Services;
 
@@ -11,21 +11,23 @@ RoleManager<IdentityRole> roleManager) : IIdentityService
     private readonly UserManager<User> _userManager = userManager;
     private readonly SignInManager<User> _signInManager = signInManager;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
-    public async Task<bool> SigninUserAsync(LoginDTO loginDTO)
+
+    public async Task<bool> CreateRoleAsync(string roleName)
     {
-        if (string.IsNullOrEmpty(loginDTO.Email))
+        var result = await _roleManager.CreateAsync(new IdentityRole(roleName));
+        if (!result.Succeeded)
         {
-            throw new Exception("Email cannot be null or empty.");
+            throw new Exception($"Role creation failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
         }
-        if (string.IsNullOrEmpty(loginDTO.Password))
-        {
-            throw new Exception("Password cannot be null or empty.");
-        }
-        var result = await _signInManager.PasswordSignInAsync(
-            loginDTO.Email,
-            loginDTO.Password,
-           true,
-           false);
         return result.Succeeded;
+    }
+    public async Task<string> GetRoleId(string roleName)
+    {
+        if (string.IsNullOrEmpty(roleName))
+        {
+            throw new ArgumentException("Role name cannot be null or empty.", nameof(roleName));
+        }
+        var role = await _roleManager.FindByNameAsync(roleName) ?? throw new Exception($"Role '{roleName}' not found.");
+        return role.Id;
     }
 }

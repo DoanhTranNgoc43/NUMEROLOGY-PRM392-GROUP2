@@ -2,9 +2,8 @@ namespace Numerology.Core.Constants
 {
     public static class UserRole
     {
-        public const string ADMIN = "Admin";
-        public const string MODERATOR = "Moderator";
-        public const string USER = "User";
-        public static readonly string[] ALL = [ADMIN, USER, MODERATOR];
+        public const string SUB_AGENT = "SubAgent";
+        public const string GENERAL_AGENT = "GeneralAgent";
+        public static readonly string[] ALL = [SUB_AGENT, GENERAL_AGENT];
     }
 }
