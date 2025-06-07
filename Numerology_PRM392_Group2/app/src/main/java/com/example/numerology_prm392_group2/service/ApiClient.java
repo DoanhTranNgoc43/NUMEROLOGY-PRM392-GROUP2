@@ -9,8 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     private static volatile Retrofit retrofit;
 
-    // Có thể thay đổi BASE_URL tại đây nếu không dùng BuildConfig
-    private static final String BASE_URL = "https://raw.githubusercontent.com";
+    private static final String BASE_URL = "https://raw.githubusercontent.com/";
 
     public static Retrofit getClient() {
         if (retrofit == null) {
