@@ -48,12 +48,9 @@ public class subAgent extends AppCompatActivity {
         NumerologyService.getAllXSMBResults()
                 .thenAccept(response -> {
                     runOnUiThread(() -> {
-                        // Console ra response
                         Log.d("API", "=== RESPONSE ===");
                         Log.d("API", "Status: " + response.getStatus());
                         Log.d("API", "Message: " + response.getMessage());
-
-                        // Console ra data
                         if (response.getData() != null) {
                             List<XSMBResult> data = response.getData();
                             Log.d("API", "Data size: " + data.size());
