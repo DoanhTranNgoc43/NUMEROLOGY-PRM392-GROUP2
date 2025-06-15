@@ -50,13 +50,13 @@ namespace Numerology.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9c5c8a3f-b254-4661-9a70-866931d24c2a",
+                            Id = "fd114c0d-f279-455b-87ad-363285c7e5de",
                             Name = "SubAgent",
                             NormalizedName = "SUBAGENT"
                         },
                         new
                         {
-                            Id = "32d953fa-dc57-4074-aa7a-8a0e72f7fe95",
+                            Id = "b813b135-1abc-49de-b715-bb494c669f2e",
                             Name = "GeneralAgent",
                             NormalizedName = "GENERALAGENT"
                         });
@@ -166,6 +166,52 @@ namespace Numerology.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("tblUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Numerology.Core.Models.Entities.Bets", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RiskLevel")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("TicketCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tblBets", (string)null);
                 });
 
             modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
@@ -311,6 +357,17 @@ namespace Numerology.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Numerology.Core.Models.Entities.Bets", b =>
+                {
+                    b.HasOne("Numerology.Core.Models.Entities.User", "User")
+                        .WithMany("Bets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
@@ -319,6 +376,11 @@ namespace Numerology.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
+                {
+                    b.Navigation("Bets");
                 });
 #pragma warning restore 612, 618
         }
