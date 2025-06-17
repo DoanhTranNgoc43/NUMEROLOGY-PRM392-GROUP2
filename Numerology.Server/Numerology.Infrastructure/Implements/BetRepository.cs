@@ -19,13 +19,6 @@ public class BetRepository(ApplicationDBContext context) : IBetRepository
         .Where(b => b.Created.Date == DateTime.Today.Date)
         .SumAsync(b => b.Amount);
     }
-    public async Task<decimal> GetFirstAmount()
-    {
-        return await _context.Bets
-        .Where(b => b.Created.Date == DateTime.Today.Date)
-        .Select(b => b.Amount)
-        .FirstOrDefaultAsync();
-    }
     public async Task<int> GetBetCount()
     {
         return await _context.Bets
@@ -46,7 +39,6 @@ public class BetRepository(ApplicationDBContext context) : IBetRepository
             .Select(g => new { Number = g.Key, TotalAmount = g.Sum(b => b.Amount) })
             .OrderByDescending(g => g.TotalAmount)
             .FirstOrDefaultAsync();
-
         return result != null ? (result.Number, result.TotalAmount) : null;
     }
     public async Task<decimal> TotalAmountNumberRisk()
@@ -56,5 +48,11 @@ public class BetRepository(ApplicationDBContext context) : IBetRepository
         .GroupBy(b => b.Number)
         .Select(g => new { Number = g.Key, TotalAmount = g.Sum(b => b.Amount) })
         .SumAsync(g => g.TotalAmount);
+    }
+    public async Task<bool> IsAllBetsWithAmount(decimal amount)
+    {
+        return await _context.Bets
+            .Where(b => b.Created.Date == DateTime.Today.Date)
+            .AllAsync(b => b.Amount == amount);
     }
 }

@@ -13,45 +13,57 @@ public class BetService(IBetRepository betRepository) : IBetService
     {
         BetsProfitDTO? result = null;
         var totalAmount = await _betRepository.TotalAmount();
+        if (totalAmount <= 0)
+        {
+            return null; 
+        }
         decimal availableCapital = totalAmount + additionalCapital;
         int countNumber = await _betRepository.GetBetCount();
-        // if (countNumber >= Bets.BETS_WIN)
-        // {
-        //     var payoutCost = Bets.PAYOUT_RATE * Bets.PAYOUT_RATE * availableCapital;
-        //     var expectedProfit = availableCapital - payoutCost;
-        //     var profitPercentage = expectedProfit / availableCapital * Bets.PERCENT_MULTIPLIER;
-        //     if (profitPercentage >= Bets.PROFIT_THRESHOLD_PERCENT)
-        //     {
-        //         result = new BetsProfitDTO
-        //         {
-        //             TotalRevenue = totalAmount,
-        //             AdditionalCapital = additionalCapital,
-        //             AvailableCapital = availableCapital,
-        //         };
-        //     }
-        // }
-        // Code chính của bạn - đã sửa
         var maxBetAmount = await _betRepository.GetNumberRickBet();
-        decimal numberCoverage = countNumber / Bets.TOTAL_NUMBERS * Bets.PERCENT_MULTIPLIER;
-        var maxPayout = maxBetAmount.Value.Amount * Bets.BETS_WIN;
-        result = new BetsProfitDTO 
+        if (countNumber >= Bets.BETS_WIN && await _betRepository.IsAllBetsWithAmount(maxBetAmount.Value.Amount)
+        && additionalCapital == 0)
         {
-            // Tài chính
-            TotalRevenue = totalAmount,
-            AdditionalCapital = additionalCapital,
-            AvailableCapital = availableCapital,
-
-            // Rủi ro
-            MaxBetAmount = maxBetAmount.Value.Amount,
-            MaxBetNumber = maxBetAmount.Value.Number,
-            MaxPayout = maxPayout,
-            ExpectedProfit = totalAmount - maxPayout,
-
-            // Độ phủ số
-            NumberCount = countNumber,
-            CoveragePercent = numberCoverage
-        };
-        DetermineRiskLevel(result!);
+            var payoutCost = 0.01m * 70 * availableCapital;
+            var expectedProfit = availableCapital - payoutCost;
+            var profitPercentage = expectedProfit / availableCapital * 100;
+            if (profitPercentage >= Bets.PROFIT_THRESHOLD_PERCENT)
+            {
+                result = new BetsProfitDTO
+                {
+                    TotalRevenue = totalAmount,
+                    AdditionalCapital = additionalCapital,
+                    AvailableCapital = availableCapital,
+                    MaxBetAmount = maxBetAmount.Value.Amount,
+                    ExpectedProfit = expectedProfit,
+                    NumberCount = countNumber,
+                    MaxBetNumber = maxBetAmount.Value.Number,
+                    CoveragePercent = 100m,
+                    RiskLevel = "Nên Ôm",
+                    Reason = $"Tất cả số đều có tiền cược {maxBetAmount.Value.Amount:N0}, " +
+                             $"vốn khả dụng {availableCapital:N0} đủ để trả tiền cược",
+                    ShouldAccept = true,
+                    MaxPayout = payoutCost
+                };
+            }
+        }
+        else if (additionalCapital == 0 && !await _betRepository.IsAllBetsWithAmount(maxBetAmount.Value.Amount))
+        {
+            decimal numberCoverage = countNumber / Bets.TOTAL_NUMBERS * Bets.PERCENT_MULTIPLIER;
+            var maxPayout = maxBetAmount.Value.Amount * Bets.BETS_WIN;
+            result = new BetsProfitDTO
+            {
+                TotalRevenue = totalAmount,
+                AdditionalCapital = additionalCapital,
+                AvailableCapital = availableCapital,
+                MaxBetAmount = maxBetAmount.Value.Amount,
+                MaxBetNumber = maxBetAmount.Value.Number,
+                MaxPayout = maxPayout,
+                ExpectedProfit = totalAmount - maxPayout,
+                NumberCount = countNumber,
+                CoveragePercent = numberCoverage
+            };
+            DetermineRiskLevel(result!);
+        }
         return result;
     }
 

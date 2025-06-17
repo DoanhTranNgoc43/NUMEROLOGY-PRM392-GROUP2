@@ -10,4 +10,5 @@ public interface IBetRepository
     Task<decimal> GetAmountMax();
     Task<(int Number, decimal Amount)?> GetNumberRickBet();
     Task<decimal> TotalAmountNumberRisk();
+    Task<bool> IsAllBetsWithAmount(decimal amount);
 }
