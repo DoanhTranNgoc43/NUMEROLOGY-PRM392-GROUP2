@@ -1,6 +1,6 @@
 namespace Numerology.Core.Models.Entities;
 
-public class BaseAuditableEntity 
+public class BaseEntity 
 {
     public Guid Id { get; set; } 
     public DateTimeOffset Created { get; set; }

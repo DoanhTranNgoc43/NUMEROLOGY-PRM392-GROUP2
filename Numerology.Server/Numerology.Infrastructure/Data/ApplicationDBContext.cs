@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,19 @@ public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options
         builder.Entity<IdentityUserToken<string>>().ToTable("tblUserTokens");
         builder.Entity<IdentityUserLogin<string>>().ToTable("tblUserLogins");
         builder.Entity<User>().ToTable("tblUsers");
+
         builder.Entity<User>()
             .HasOne(u => u.Role)
             .WithMany()
             .HasForeignKey(u => u.RoleId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Bets>().ToTable("tblBets");
+        builder.Entity<Bets>()
+            .HasOne(b => b.User)
+            .WithMany(u => u.Bets)
+            .OnDelete(DeleteBehavior.Cascade);
         builder.SeedDatabase();
     }
+    public DbSet<Bets> Bets { get; set; } 
 }

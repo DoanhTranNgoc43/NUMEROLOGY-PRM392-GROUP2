@@ -12,10 +12,12 @@ public static class ServiceExtension
         #region Services
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IBetService, BetService>();
         #endregion
-        
+
         #region Repositories
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IBetRepository, BetRepository>();
         #endregion
         return services;
     }
