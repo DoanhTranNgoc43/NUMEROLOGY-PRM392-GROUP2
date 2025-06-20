@@ -9,7 +9,7 @@ public class BetsProfitDTO
     
     // Rủi ro
     public decimal MaxBetAmount { get; set; }        // Số có tiền cược cao nhất
-    public int MaxBetNumber { get; set; }            // Số nào nguy hiểm nhất
+    public int? MaxBetNumber { get; set; }            // Số nào nguy hiểm nhất
     public decimal MaxPayout { get; set; }           // Tiền phải trả tối đa
     public decimal ExpectedProfit { get; set; }      // Lãi/lỗ nếu về số nóng
     

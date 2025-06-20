@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Numerology.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf9297e9359597952d3757fcc8bbc09804c6ca1e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a9678aeb3f3a88fda4b87ffcfbedafde5990ee4")]
 [assembly: System.Reflection.AssemblyProductAttribute("Numerology.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Numerology.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
