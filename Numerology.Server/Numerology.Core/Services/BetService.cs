@@ -8,7 +8,6 @@ namespace Numerology.Core.Services;
 public class BetService(IBetRepository betRepository) : IBetService
 {
     private readonly IBetRepository _betRepository = betRepository;
-
     public async Task<BetsProfitDTO?> CalculateExpectedProfit(decimal additionalCapital = 0)
     {
         BetsProfitDTO? result = null;
