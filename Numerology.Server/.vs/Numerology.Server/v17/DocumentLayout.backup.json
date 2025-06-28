@@ -1,10 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\",
+  "WorkspaceRootPath": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{907F2210-BBBA-4F54-9CC2-E6293B594343}|Numerology.API\\Numerology.API.csproj|c:\\users\\d\\documents\\numerology-prm392\\numerology.server\\numerology.api\\numerology.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{907F2210-BBBA-4F54-9CC2-E6293B594343}|Numerology.API\\Numerology.API.csproj|solutionrelative:numerology.api\\numerology.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{5DAA15F1-161E-49E0-A455-8B3DFCCFE980}|Numerology.Core\\Numerology.Core.csproj|c:\\users\\d\\documents\\numerology-prm392-group2\\numerology.server\\numerology.core\\services\\betservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5DAA15F1-161E-49E0-A455-8B3DFCCFE980}|Numerology.Core\\Numerology.Core.csproj|solutionrelative:numerology.core\\services\\betservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F91B4632-BD45-49B7-B27D-1FB76246BEC3}|Numerology.Infrastructure\\Numerology.Infrastructure.csproj|c:\\users\\d\\documents\\numerology-prm392-group2\\numerology.server\\numerology.infrastructure\\implements\\betrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F91B4632-BD45-49B7-B27D-1FB76246BEC3}|Numerology.Infrastructure\\Numerology.Infrastructure.csproj|solutionrelative:numerology.infrastructure\\implements\\betrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{907F2210-BBBA-4F54-9CC2-E6293B594343}|Numerology.API\\Numerology.API.csproj|c:\\users\\d\\documents\\numerology-prm392-group2\\numerology.server\\numerology.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{907F2210-BBBA-4F54-9CC2-E6293B594343}|Numerology.API\\Numerology.API.csproj|solutionrelative:numerology.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 237,
-          "SelectedChildIndex": 39,
+          "SelectedChildIndex": 40,
           "Children": [
             {
               "$type": "Bookmark",
@@ -174,15 +182,41 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BetRepository.cs",
+              "DocumentMoniker": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Implements\\BetRepository.cs",
+              "RelativeDocumentMoniker": "Numerology.Infrastructure\\Implements\\BetRepository.cs",
+              "ToolTip": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Infrastructure\\Implements\\BetRepository.cs",
+              "RelativeToolTip": "Numerology.Infrastructure\\Implements\\BetRepository.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAcwDMAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T08:54:58.278Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Numerology.API",
-              "DocumentMoniker": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.API\\Numerology.API.csproj",
-              "RelativeDocumentMoniker": "Numerology.API\\Numerology.API.csproj",
-              "ToolTip": "C:\\Users\\d\\Documents\\Numerology-PRM392\\Numerology.Server\\Numerology.API\\Numerology.API.csproj",
-              "RelativeToolTip": "Numerology.API\\Numerology.API.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-06-02T11:01:04.409Z",
+              "Title": "BetService.cs",
+              "DocumentMoniker": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Services\\BetService.cs",
+              "RelativeDocumentMoniker": "Numerology.Core\\Services\\BetService.cs",
+              "ToolTip": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.Core\\Services\\BetService.cs",
+              "RelativeToolTip": "Numerology.Core\\Services\\BetService.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAtwBYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T08:53:17.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.API\\Program.cs",
+              "RelativeDocumentMoniker": "Numerology.API\\Program.cs",
+              "ToolTip": "C:\\Users\\d\\Documents\\NUMEROLOGY-PRM392-GROUP2\\Numerology.Server\\Numerology.API\\Program.cs",
+              "RelativeToolTip": "Numerology.API\\Program.cs",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T11:04:12.113Z",
               "EditorCaption": ""
             }
           ]
