@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Numerology.API.Mappers;
 using Numerology.API.ServiceExtension;
 using Numerology.Core.Constants;
 using Numerology.Core.Models;
@@ -38,6 +39,7 @@ namespace Numerology.API
                      return new BadRequestObjectResult(response);
                  };
              });
+            builder.Services.Configure<GoogleConfig>(builder.Configuration.GetSection("Google"));
             var jwtSection = builder.Configuration.GetSection("JWT");
             builder.Services.Configure<JwtConfig>(jwtSection);
             var jwtConfig = jwtSection.Get<JwtConfig>()
@@ -64,6 +66,7 @@ namespace Numerology.API
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(MapperProfile));
             builder.Services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
@@ -108,14 +111,13 @@ namespace Numerology.API
                 }
             };
         });
-
+            builder.Services.RegisterService();
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            builder.Services.RegisterService();
             app.UseCors(Policy.SINGLE_PAGE_APP);
             app.UseHttpsRedirection();
             app.UseAuthorization();

@@ -7,6 +7,7 @@ public class User : IdentityUser
 {
     [MaxLength(100)]
     public string RefreshToken { get; set; } = string.Empty;
+    public DateTime RefreshTokenExpiryTime { get; set; }
     public string? RoleId { get; set; }
     public virtual IdentityRole? Role { get; set; }
     public string? FullName { get; set; }
