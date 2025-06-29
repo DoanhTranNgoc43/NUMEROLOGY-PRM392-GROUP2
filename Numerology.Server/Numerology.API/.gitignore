@@ -1,0 +1,14 @@
+*.cache
+*.tmp
+*.dll
+
+# forlder vs code
+.vscode/
+# folder node_modules
+node_modules/
+# folder dist
+dist/
+# folder bin
+bin/
+# folder obj
+obj/
