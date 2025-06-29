@@ -1,17 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Numerology.Core.Constants;
 using Numerology.Core.Interfaces;
 using Numerology.Core.Models;
+using Numerology.Core.Models.Configs;
 using Numerology.Core.Models.DTOs.Auth;
 
 namespace Numerology.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(IAuthService authService, IIdentityService identityService) : ControllerBase
+public class AuthController(IAuthService authService, IIdentityService identityService,
+IUserService userService, IOptions<JwtConfig> jwtConfig) : ControllerBase
 {
     private readonly IAuthService _authService = authService;
     private readonly IIdentityService _identityService = identityService;
+    private readonly IUserService _userService = userService;
+    private readonly JwtConfig _jwtConfig = jwtConfig.Value;
     [HttpPost("login")]
     public async Task<IActionResult> Authenticate([FromBody] LoginDTO loginDTO)
     {
@@ -36,6 +41,20 @@ public class AuthController(IAuthService authService, IIdentityService identityS
             });
         }
     }
+     [HttpPost("login-google")]
+    public async Task<IActionResult> GoogleAuthenticate(ExternalAuthDTO externalAuth)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var user = await _userService.FindOrCreateUserAsync(externalAuth, [UserRole.SUB_AGENT]);
+        var tokenDTO = await _userService
+            .CreateAuthTokenAsync(user!.Username, _jwtConfig.RefreshTokenValidityInDays);
+        return Ok(new Response
+        {
+            Status = ResponseStatus.SUCCESS,
+            Message = "Login successfully"
+        });
+    }
+
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
     {

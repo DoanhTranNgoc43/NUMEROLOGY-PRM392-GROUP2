@@ -13,6 +13,8 @@ public static class ServiceExtension
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IBetService, BetService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITokenService, TokenService>();
         #endregion
 
         #region Repositories

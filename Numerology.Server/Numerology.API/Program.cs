@@ -39,6 +39,7 @@ namespace Numerology.API
                      return new BadRequestObjectResult(response);
                  };
              });
+            builder.Services.Configure<GoogleConfig>(builder.Configuration.GetSection("Google"));
             var jwtSection = builder.Configuration.GetSection("JWT");
             builder.Services.Configure<JwtConfig>(jwtSection);
             var jwtConfig = jwtSection.Get<JwtConfig>()
