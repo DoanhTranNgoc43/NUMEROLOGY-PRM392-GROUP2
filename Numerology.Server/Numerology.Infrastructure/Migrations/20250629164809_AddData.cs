@@ -18,6 +18,26 @@ namespace Numerology.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "tblBets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    NameUser = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Created = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    LastModified = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblBets", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "tblRoles",
                 columns: table => new
                 {
@@ -110,37 +130,6 @@ namespace Numerology.Infrastructure.Migrations
                         principalTable: "tblRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "tblBets",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Region = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RiskLevel = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TicketCount = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    LastModified = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tblBets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_tblBets_tblUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "tblUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -251,14 +240,9 @@ namespace Numerology.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "b813b135-1abc-49de-b715-bb494c669f2e", null, "GeneralAgent", "GENERALAGENT" },
-                    { "fd114c0d-f279-455b-87ad-363285c7e5de", null, "SubAgent", "SUBAGENT" }
+                    { "20092e75-7c72-43a0-9a9d-c516edc33330", null, "SubAgent", "SUBAGENT" },
+                    { "7354ef7d-b471-477c-80fb-301d3955db20", null, "GeneralAgent", "GENERALAGENT" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tblBets_UserId",
-                table: "tblBets",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tblRoleClaims_RoleId",

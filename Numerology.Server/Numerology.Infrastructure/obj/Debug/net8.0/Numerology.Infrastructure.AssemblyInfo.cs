@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Numerology.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33c526d0846faa7b0f7778aea89a14b643673728")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbe56ee8f3edfcd7d06aeec8166db0d423e7882f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Numerology.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Numerology.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

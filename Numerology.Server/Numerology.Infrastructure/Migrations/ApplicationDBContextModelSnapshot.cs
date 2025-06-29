@@ -50,13 +50,13 @@ namespace Numerology.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fd114c0d-f279-455b-87ad-363285c7e5de",
+                            Id = "20092e75-7c72-43a0-9a9d-c516edc33330",
                             Name = "SubAgent",
                             NormalizedName = "SUBAGENT"
                         },
                         new
                         {
-                            Id = "b813b135-1abc-49de-b715-bb494c669f2e",
+                            Id = "7354ef7d-b471-477c-80fb-301d3955db20",
                             Name = "GeneralAgent",
                             NormalizedName = "GENERALAGENT"
                         });
@@ -189,27 +189,14 @@ namespace Numerology.Infrastructure.Migrations
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("NameUser")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<string>("Region")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RiskLevel")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("TicketCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("tblBets", (string)null);
                 });
@@ -357,17 +344,6 @@ namespace Numerology.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Numerology.Core.Models.Entities.Bets", b =>
-                {
-                    b.HasOne("Numerology.Core.Models.Entities.User", "User")
-                        .WithMany("Bets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
@@ -376,11 +352,6 @@ namespace Numerology.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
-                {
-                    b.Navigation("Bets");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,5 +15,4 @@ public class User : IdentityUser
     public Guid? CreatedBy { get; set; }
     public DateTimeOffset LastModified { get; set; }
     public Guid? LastModifiedBy { get; set; }
-    public List<Bets> Bets { get; set; } = [];
 }
