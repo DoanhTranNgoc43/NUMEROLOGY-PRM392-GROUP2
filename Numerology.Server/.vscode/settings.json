@@ -1,0 +1,81 @@
+{
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true
+  },
+  "runTerminalCommand.commands": [
+    {
+      "command": "dotnet run",
+      "auto": true,
+      "group": ".NET Core",
+      "name": "Run"
+    },
+    {
+      "command": "dotnet watch run",
+      "auto": true,
+      "preserve": true,
+      "group": ".NET Core",
+      "name": "Run and watch"
+    },
+    {
+      "command": "dotnet add package <PACKAGE_NAME> -v <VERSION>",
+      "group": ".NET Core",
+      "name": "Add package"
+    },
+    {
+      "command": "dotnet list package",
+      "auto": true,
+      "group": ".NET Core",
+      "name": "List package"
+    },
+    {
+      "command": "dotnet remove package <PACKAGE_NAME>",
+      "group": ".NET Core",
+      "name": "Remove package"
+    },
+    {
+      "command": "dotnet add reference <PROJECT_REFERENCES>",
+      "group": ".NET Core",
+      "name": "Add reference"
+    },
+    {
+      "command": "dotnet list reference",
+      "auto": true,
+      "group": ".NET Core",
+      "name": "List reference"
+    },
+    {
+      "command": "dotnet remove reference <PROJECT_REFERENCES>",
+      "group": ".NET Core",
+      "name": "Remove reference"
+    },
+    {
+      "command": "dotnet ef migrations add <MIGRATION_NAME> -s ../Numerology.API -p ../Numerology.Infrastructure",
+      "group": ".NET Core EF",
+      "name": "Add migration"
+    },
+    {
+      "command": "dotnet ef migrations remove -s ../Numerology.API -p ../Numerology.Infrastructure",
+      "auto": true,
+      "group": ".NET Core EF",
+      "name": "Remove last migration"
+    },
+    {
+      "command": "dotnet ef database update <MIGRATION_NAME> -s ../Numerology.API -p ../Numerology.Infrastructure",
+      "group": ".NET Core EF",
+      "name": "Update database"
+    },
+    {
+      "command": "dotnet ef database update -s ../Numerology.API -p ../Numerology.Infrastructure",
+      "auto": true,
+      "group": ".NET Core EF",
+      "name": "Update last database"
+    },
+    {
+      "command": "dotnet ef database drop -s ../Numerology.API -p ../Numerology.Infrastructure",
+      "auto": true,
+      "group": ".NET Core EF",
+      "name": "Drop database"
+    }
+  ]
+}

@@ -11,15 +11,17 @@ using Numerology.Core.Models.Configs;
 using Numerology.Core.Models.Entities;
 using Numerology.Infrastructure.Data;
 using System.Text;
+using Hangfire;
 
 namespace Numerology.API
 {
     public class Program
     {
+        [Obsolete]
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddHttpClient();
             builder.Services.AddControllers()
              .ConfigureApiBehaviorOptions(options =>
              {
@@ -112,6 +114,7 @@ namespace Numerology.API
             };
         });
             builder.Services.RegisterService();
+            builder.Services.AddHangfireServices(builder.Configuration);
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
@@ -120,8 +123,20 @@ namespace Numerology.API
             }
             app.UseCors(Policy.SINGLE_PAGE_APP);
             app.UseHttpsRedirection();
+
+            // Hangfire Middleware
+            app.UseHangfireDashboard("/admin/jobs");
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
+
+            // Cấu hình recurring jobs
+            using (var scope = app.Services.CreateScope())
+            {
+                var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+                RecurringJobsExtension.ConfigureRecurringJobs(recurringJobManager);
+            }
+
             app.Run();
         }
     }

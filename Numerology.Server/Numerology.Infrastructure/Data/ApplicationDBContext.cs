@@ -11,13 +11,12 @@ public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<IdentityRole>().ToTable("tblRoles");
-        builder.Entity<IdentityRole>().ToTable("tblRoles");
-        builder.Entity<IdentityRoleClaim<string>>().ToTable("tblRoleClaims");
-        builder.Entity<IdentityUserClaim<string>>().ToTable("tblUserClaims");
-        builder.Entity<IdentityUserRole<string>>().ToTable("tblUserRoles");
-        builder.Entity<IdentityUserToken<string>>().ToTable("tblUserTokens");
-        builder.Entity<IdentityUserLogin<string>>().ToTable("tblUserLogins");
+        builder.Ignore<IdentityRole>();
+        builder.Ignore<IdentityRoleClaim<string>>();
+        builder.Ignore<IdentityUserClaim<string>>();
+        builder.Ignore<IdentityUserRole<string>>();
+        builder.Ignore<IdentityUserToken<string>>();
+        builder.Ignore<IdentityUserLogin<string>>();
         builder.Entity<User>().ToTable("tblUsers");
 
         builder.Entity<User>()
@@ -27,7 +26,11 @@ public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.Entity<Bets>().ToTable("tblBets");
+        builder.Entity<LotteryResult>().ToTable("tblLotteryResult")
+                .HasIndex(l => l.Created)
+                .IsUnique();
         builder.SeedDatabase();
     }
-    public DbSet<Bets> Bets { get; set; } 
+    public DbSet<Bets> Bets { get; set; }
+    public DbSet<LotteryResult> LotteryResults { get; set; }
 }
