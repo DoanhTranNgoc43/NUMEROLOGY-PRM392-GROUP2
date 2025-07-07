@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BettingManager {
     private static BettingManager instance;
-    private List<BettingInfo> bettingList;
+    private final List<BettingInfo> bettingList;
 
     private BettingManager() {
         bettingList = new ArrayList<>();

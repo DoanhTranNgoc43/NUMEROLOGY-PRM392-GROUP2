@@ -33,13 +33,13 @@ public class list extends AppCompatActivity {
             return insets;
         });
 
-        initViews();
+        bildingViews();
         setupRecyclerView();
         setupClickListeners();
         loadBettingData();
     }
 
-    private void initViews() {
+    private void bildingViews() {
         bettingListRecyclerView = findViewById(R.id.bettingListRecyclerView);
         probabilityAnalysisButton = findViewById(R.id.probabilityAnalysisButton);
     }

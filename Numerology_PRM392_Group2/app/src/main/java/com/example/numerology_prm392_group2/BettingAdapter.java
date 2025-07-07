@@ -15,7 +15,7 @@ import java.util.Locale;
 public class BettingAdapter extends RecyclerView.Adapter<BettingAdapter.BettingViewHolder> {
 
     private List<BettingInfo> bettingList;
-    private NumberFormat currencyFormat;
+    private final NumberFormat currencyFormat;
 
     public BettingAdapter(List<BettingInfo> bettingList) {
         this.bettingList = bettingList;
