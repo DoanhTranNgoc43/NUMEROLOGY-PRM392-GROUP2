@@ -15,7 +15,7 @@ public class BettingInfo implements Serializable {
         this.bettingAmount = bettingAmount;
     }
 
-    // Getters and Setters
+
     public String getBettorName() {
         return bettorName;
     }

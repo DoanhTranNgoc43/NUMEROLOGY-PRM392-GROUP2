@@ -92,7 +92,7 @@ public class subAgent extends AppCompatActivity {
         String bettingNumber = bettingNumberInput.getText().toString().trim();
         String bettingAmountStr = bettingAmountInput.getText().toString().trim();
 
-        // Validate inputs
+
         if (TextUtils.isEmpty(bettorName)) {
             bettorNameInput.setError("Vui lòng nhập tên người cược");
             bettorNameInput.requestFocus();
@@ -140,14 +140,14 @@ public class subAgent extends AppCompatActivity {
                 return;
             }
 
-            // Create betting info object and add to manager
+
             BettingInfo bettingInfo = new BettingInfo(bettorName, bettingNumber, bettingAmount);
             BettingManager.getInstance().addBetting(bettingInfo);
 
-            // Show success message
+
             Toast.makeText(this, "Đã thêm thông tin cược thành công!", Toast.LENGTH_SHORT).show();
 
-            // Clear input fields
+
             clearInputs();
 
         } catch (NumberFormatException e) {

@@ -16,6 +16,7 @@ import java.util.Locale;
 public class TopNumbersAdapter extends RecyclerView.Adapter<TopNumbersAdapter.TopNumberViewHolder> {
 
     private List<NumberStats> topNumbers;
+
     private NumberFormat currencyFormat;
 
     public TopNumbersAdapter(List<NumberStats> topNumbers) {
