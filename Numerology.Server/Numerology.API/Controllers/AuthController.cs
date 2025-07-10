@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Numerology.Core.Constants;
 using Numerology.Core.Interfaces;
@@ -18,13 +20,28 @@ public class AuthController(IAuthService authService, IIdentityService identityS
         try
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var result = await _authService.SigninUserAsync(loginDTO);
             if (!result) throw new Exception("Email or password is incorrect");
-            await _authService.CreateAuthTokenAsync(loginDTO.Username);
+
+            // Get token data and user information
+            var tokenData = await _authService.CreateAuthTokenAsync(loginDTO.Username);
+            var user = await _authService.GetUserByUsernameAsync(loginDTO.Username);
+
             return Ok(new Response
             {
                 Status = ResponseStatus.SUCCESS,
                 Message = "Login successful",
+                Data = new
+                {
+                    token = tokenData.AccessToken,
+                    user = new
+                    {
+                        id = user.Id,
+                        name = user.UserName,
+                        email = user.Email
+                    }
+                }
             });
         }
         catch (Exception ex)
@@ -95,5 +112,22 @@ public class AuthController(IAuthService authService, IIdentityService identityS
                 Message = ex.Message
             });
         }
+    }
+    [Authorize]
+    [HttpGet("/api/user/profile")]
+    public async Task<IActionResult> GetProfile()
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name);
+        if (string.IsNullOrEmpty(username))
+        {
+            return Unauthorized(new Response
+            {
+                Status = ResponseStatus.ERROR,
+                Message = "Unauthorized"
+            });
+        }
+
+        var profile = await _authService.GetUserProfileAsync(username);
+        return Ok(profile);
     }
 }

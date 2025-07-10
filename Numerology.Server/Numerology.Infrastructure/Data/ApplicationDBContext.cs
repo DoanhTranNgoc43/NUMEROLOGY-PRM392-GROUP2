@@ -12,7 +12,8 @@ public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<IdentityRole>().ToTable("tblRoles");
+
+
         builder.Entity<IdentityRole>().ToTable("tblRoles");
         builder.Entity<IdentityRoleClaim<string>>().ToTable("tblRoleClaims");
         builder.Entity<IdentityUserClaim<string>>().ToTable("tblUserClaims");
@@ -27,12 +28,22 @@ public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options
             .HasForeignKey(u => u.RoleId)
             .OnDelete(DeleteBehavior.SetNull);
 
+    
         builder.Entity<Bets>().ToTable("tblBets");
         builder.Entity<Bets>()
             .HasOne(b => b.User)
             .WithMany(u => u.Bets)
             .OnDelete(DeleteBehavior.Cascade);
+
+     
+        builder.Entity<Bets>()
+            .Property(b => b.Amount)
+            .HasColumnType("decimal(18,2)"); 
+
+        
         builder.SeedDatabase();
     }
-    public DbSet<Bets> Bets { get; set; } 
+
+
+    public DbSet<Bets> Bets { get; set; }
 }

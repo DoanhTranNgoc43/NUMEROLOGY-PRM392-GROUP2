@@ -50,6 +50,7 @@ public class AuthService : IAuthService
            false);
         return result.Succeeded;
     }
+
     public async Task<TokenDTO> CreateAuthTokenAsync(string username, int expDays = -1)
     {
         if (string.IsNullOrEmpty(username))
@@ -73,6 +74,17 @@ public class AuthService : IAuthService
             RefreshToken = user.RefreshToken
         };
     }
+
+    public async Task<User> GetUserByUsernameAsync(string username)
+    {
+        if (string.IsNullOrEmpty(username))
+        {
+            throw new ArgumentException("Username cannot be null or empty.", nameof(username));
+        }
+        return await _userRepository.GetUserByUsernameAsync(username)
+            ?? throw new NotFoundException($"User not found with username: {username}");
+    }
+
     private string GenerateAccessToken(List<Claim> claims)
     {
         var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
@@ -88,6 +100,7 @@ public class AuthService : IAuthService
         var token = tokenHandle.CreateToken(tokenDescriptor);
         return tokenHandle.WriteToken(token);
     }
+
     public async Task<bool> CheckUserNameExists(string username)
     {
         if (string.IsNullOrEmpty(username))
@@ -96,6 +109,7 @@ public class AuthService : IAuthService
         }
         return await _userManager.FindByNameAsync(username) != null;
     }
+
     public async Task<(bool isUserExists, bool isConfirmed)> CheckUserExistsWithEmailConfirmedAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -105,6 +119,7 @@ public class AuthService : IAuthService
         }
         return (false, false);
     }
+
     public async Task<bool> ConfirmEmailAsync(string email, string token)
     {
         var user = await _userManager.FindByEmailAsync(email)
@@ -112,6 +127,7 @@ public class AuthService : IAuthService
         var result = await _userManager.ConfirmEmailAsync(user, token);
         return result.Succeeded;
     }
+
     public async Task<bool> CleanupUnconfirmedUserAsync(string email)
     {
         if (string.IsNullOrEmpty(email))
@@ -126,6 +142,7 @@ public class AuthService : IAuthService
         }
         return true;
     }
+
     public async Task<bool> CreateUserAsync(RegisterDTO registerDTO, string role, bool confirm = false)
     {
         var user = new User
@@ -142,11 +159,25 @@ public class AuthService : IAuthService
         }
         return result.Succeeded;
     }
+
     private string GenerateRefreshToken()
     {
         var randomNumber = new byte[64];
         var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
+    }
+    public async Task<UserProfileDTO> GetUserProfileAsync(string username)
+    {
+        var user = await _userRepository.GetUserByUsernameAsync(username)
+            ?? throw new Exception("User not found");
+
+        return new UserProfileDTO
+        {
+            UserId = user.Id,
+            FullName = user.FullName ?? string.Empty,
+            Email = user.Email ?? string.Empty,
+            PhoneNumber = user.PhoneNumber ?? string.Empty
+        };
     }
 }

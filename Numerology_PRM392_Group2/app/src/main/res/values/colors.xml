@@ -22,4 +22,6 @@
     <!-- Legacy support -->
     <color name="primary_color">@color/primary</color>
     <color name="divider_color">@color/divider</color>
+
+
 </resources>

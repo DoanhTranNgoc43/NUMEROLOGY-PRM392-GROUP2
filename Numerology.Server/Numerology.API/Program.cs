@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Numerology.API.Mappers;
 using Numerology.API.ServiceExtension;
 using Numerology.Core.Constants;
@@ -19,6 +20,8 @@ namespace Numerology.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+           
 
             builder.Services.AddControllers()
              .ConfigureApiBehaviorOptions(options =>
@@ -45,12 +48,12 @@ namespace Numerology.API
                  ?? throw new Exception("Jwt options have not been set!");
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
             {
-                options.UseMySql(
-                builder.Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")),
-                mysqlOptions => mysqlOptions.EnableRetryOnFailure()
-                    );
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    sqlOptions => sqlOptions.EnableRetryOnFailure()
+                );
             });
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy(Policy.SINGLE_PAGE_APP, policy =>
@@ -64,7 +67,34 @@ namespace Numerology.API
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Numerology.API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {your token}'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+            });
             builder.Services.AddAutoMapper(typeof(MapperProfile));
             builder.Services.AddIdentity<User, IdentityRole>(options =>
             {
@@ -119,9 +149,11 @@ namespace Numerology.API
             }
             app.UseCors(Policy.SINGLE_PAGE_APP);
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
         }
+
     }
 }

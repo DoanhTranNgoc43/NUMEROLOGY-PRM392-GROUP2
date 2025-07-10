@@ -1,11 +1,10 @@
 package com.example.numerology_prm392_group2.service;
 
-import com.example.numerology_prm392_group2.model.Response;
-import com.example.numerology_prm392_group2.model.XSMBResult;
+import com.example.numerology_prm392_group2.models.Response;
+import com.example.numerology_prm392_group2.models.XSMBResult;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 
 public class NumerologyService {
     private static final INumerologyService api =

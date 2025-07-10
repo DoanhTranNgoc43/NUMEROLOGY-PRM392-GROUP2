@@ -1,6 +1,6 @@
 package com.example.numerology_prm392_group2.service;
 
-import com.example.numerology_prm392_group2.model.XSMBResult;
+import com.example.numerology_prm392_group2.models.XSMBResult;
 
 import java.util.List;
 

@@ -12,7 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.numerology_prm392_group2.model.XSMBResult;
+import com.example.numerology_prm392_group2.models.XSMBResult;
 import com.example.numerology_prm392_group2.service.NumerologyService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
