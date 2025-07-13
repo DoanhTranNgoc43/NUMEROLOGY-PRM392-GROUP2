@@ -15,4 +15,6 @@ public class User : IdentityUser
     public Guid? CreatedBy { get; set; }
     public DateTimeOffset LastModified { get; set; }
     public Guid? LastModifiedBy { get; set; }
+    public ICollection<Bets> Bets { get; set; } = new List<Bets>();
+
 }

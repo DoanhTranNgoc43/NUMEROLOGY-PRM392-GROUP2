@@ -10,25 +10,20 @@ using Numerology.Core.Constants;
 using Numerology.Core.Models;
 using Numerology.Core.Models.Configs;
 using Numerology.Core.Models.Entities;
+using Numerology.Core.Repositories;
 using Numerology.Infrastructure.Data;
 using System.Text;
-using Hangfire;
 
 namespace Numerology.API
 {
     public class Program
     {
-        [Obsolete]
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-<<<<<<< HEAD
 
-           
 
-=======
-            builder.Services.AddHttpClient();
->>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
+
             builder.Services.AddControllers()
              .ConfigureApiBehaviorOptions(options =>
              {
@@ -48,7 +43,6 @@ namespace Numerology.API
                      return new BadRequestObjectResult(response);
                  };
              });
-            builder.Services.Configure<GoogleConfig>(builder.Configuration.GetSection("Google"));
             var jwtSection = builder.Configuration.GetSection("JWT");
             builder.Services.Configure<JwtConfig>(jwtSection);
             var jwtConfig = jwtSection.Get<JwtConfig>()
@@ -70,7 +64,9 @@ namespace Numerology.API
                     policy.AllowAnyMethod();
                     policy.AllowCredentials();
                 });
-            });
+            }); 
+           
+
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -148,7 +144,6 @@ namespace Numerology.API
             };
         });
             builder.Services.RegisterService();
-            builder.Services.AddHangfireServices(builder.Configuration);
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
@@ -157,23 +152,9 @@ namespace Numerology.API
             }
             app.UseCors(Policy.SINGLE_PAGE_APP);
             app.UseHttpsRedirection();
-<<<<<<< HEAD
-=======
-
-            // Hangfire Middleware
-            app.UseHangfireDashboard("/admin/jobs");
->>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-
-            // Cấu hình recurring jobs
-            using (var scope = app.Services.CreateScope())
-            {
-                var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-                RecurringJobsExtension.ConfigureRecurringJobs(recurringJobManager);
-            }
-
             app.Run();
         }
 

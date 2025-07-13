@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.numerology_prm392_group2.R;
-import com.example.numerology_prm392_group2.models.LoginResponse;
 import com.example.numerology_prm392_group2.models.UpdateProfileRequest;
 import com.example.numerology_prm392_group2.models.UserProfileResponse;
 import com.example.numerology_prm392_group2.utils.ApiService;

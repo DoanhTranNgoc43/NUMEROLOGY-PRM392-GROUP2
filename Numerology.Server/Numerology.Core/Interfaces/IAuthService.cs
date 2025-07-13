@@ -15,4 +15,5 @@ public interface IAuthService
     Task<TokenDTO> CreateAuthTokenAsync(string username, int expDays = -1);
     Task<User> GetUserByUsernameAsync(string username);
     Task<UserProfileDTO> GetUserProfileAsync(string username);
+    Task<UserProfileDTO> UpdateUserProfileAsync(string username, UpdateProfileDTO updateProfileDTO);
 }

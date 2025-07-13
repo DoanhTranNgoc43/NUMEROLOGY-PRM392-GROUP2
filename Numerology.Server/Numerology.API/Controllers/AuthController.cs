@@ -1,24 +1,20 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Numerology.Core.Constants;
 using Numerology.Core.Interfaces;
 using Numerology.Core.Models;
-using Numerology.Core.Models.Configs;
 using Numerology.Core.Models.DTOs.Auth;
+using Numerology.Core.Exceptions;
 
 namespace Numerology.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(IAuthService authService, IIdentityService identityService,
-IUserService userService, IOptions<JwtConfig> jwtConfig) : ControllerBase
+public class AuthController(IAuthService authService, IIdentityService identityService) : ControllerBase
 {
     private readonly IAuthService _authService = authService;
     private readonly IIdentityService _identityService = identityService;
-    private readonly IUserService _userService = userService;
-    private readonly JwtConfig _jwtConfig = jwtConfig.Value;
     [HttpPost("login")]
     public async Task<IActionResult> Authenticate([FromBody] LoginDTO loginDTO)
     {
@@ -58,20 +54,6 @@ IUserService userService, IOptions<JwtConfig> jwtConfig) : ControllerBase
             });
         }
     }
-     [HttpPost("login-google")]
-    public async Task<IActionResult> GoogleAuthenticate(ExternalAuthDTO externalAuth)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-        var user = await _userService.FindOrCreateUserAsync(externalAuth, [UserRole.SUB_AGENT]);
-        var tokenDTO = await _userService
-            .CreateAuthTokenAsync(user!.Username, _jwtConfig.RefreshTokenValidityInDays);
-        return Ok(new Response
-        {
-            Status = ResponseStatus.SUCCESS,
-            Message = "Login successfully"
-        });
-    }
-
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
     {
@@ -148,5 +130,65 @@ IUserService userService, IOptions<JwtConfig> jwtConfig) : ControllerBase
 
         var profile = await _authService.GetUserProfileAsync(username);
         return Ok(profile);
+    }
+    [Authorize]
+    [HttpPut("/api/user/profile/update")]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDTO updateProfileDTO)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new Response
+                {
+                    Status = ResponseStatus.ERROR,
+                    Message = "Invalid input",
+                    Data = ModelState
+                });
+            }
+
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            if (string.IsNullOrEmpty(username))
+            {
+                return Unauthorized(new Response
+                {
+                    Status = ResponseStatus.ERROR,
+                    Message = "Unauthorized"
+                });
+            }
+
+            var updatedProfile = await _authService.UpdateUserProfileAsync(username, updateProfileDTO);
+
+            return Ok(new Response
+            {
+                Status = ResponseStatus.SUCCESS,
+                Message = "Profile updated successfully",
+                Data = updatedProfile
+            });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new Response
+            {
+                Status = ResponseStatus.ERROR,
+                Message = ex.Message
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new Response
+            {
+                Status = ResponseStatus.ERROR,
+                Message = ex.Message
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new Response
+            {
+                Status = ResponseStatus.ERROR,
+                Message = ex.Message
+            });
+        }
     }
 }

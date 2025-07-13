@@ -1,7 +1,6 @@
 package com.example.numerology_prm392_group2.controller;
 
 import android.os.Bundle;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

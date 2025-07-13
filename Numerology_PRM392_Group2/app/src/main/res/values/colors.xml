@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background">#F5F5F5</color>
     <!-- Theme Colors -->
     <color name="primary">#673AB7</color>
     <color name="primary_dark">#512DA8</color>
@@ -23,5 +24,24 @@
     <color name="primary_color">@color/primary</color>
     <color name="divider_color">@color/divider</color>
 
+    <!-- Màu cho người trúng -->
+    <color name="winner_background">#FFF8E1</color>
+    <color name="winner_stroke">#FFD700</color>
+    <color name="winner_text">#E65100</color>
+    <color name="winner_number">#FF6F00</color>
+
+    <!-- Màu bình thường -->
+    <color name="normal_background">#FFFFFF</color>
+    <color name="normal_stroke">#E0E0E0</color>
+    <color name="normal_text">#333333</color>
+
+    <!-- Màu text -->
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+
+    <!-- Màu khác -->
+    <color name="success_color">#4CAF50</color>
+    <color name="error_color">#F44336</color>
+    <color name="warning_color">#FF9800</color>
 
 </resources>

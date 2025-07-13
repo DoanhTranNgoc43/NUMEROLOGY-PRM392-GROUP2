@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Numerology.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02fd0098969bfe9e35a64ac38d779a275db4b0d8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34eb00a9416bfe5e1e18009040625a27f1ff6ed8")]
 [assembly: System.Reflection.AssemblyProductAttribute("Numerology.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Numerology.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

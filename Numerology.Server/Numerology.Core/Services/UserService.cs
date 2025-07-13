@@ -15,7 +15,7 @@ public class UserService(UserManager<User> userManager, IMapper mapper, ITokenSe
     private readonly IMapper _mapper = mapper;
     private readonly UserManager<User> _userManager = userManager;
     private readonly ITokenService _tokenService = tokenService;
-    public async Task<UserDTO?> FindOrCreateUserAsync(ExternalAuthDTO externalAuth, List<string> roles)
+    public async Task<Models.DTOs.Auth.UserDTO?> FindOrCreateUserAsync(ExternalAuthDTO externalAuth, List<string> roles)
     {
         var payload = await _tokenService.VerifyGoogleToken(externalAuth)
             ?? throw new Exception("Invalid token");
@@ -41,7 +41,7 @@ public class UserService(UserManager<User> userManager, IMapper mapper, ITokenSe
             await _userManager.AddToRolesAsync(user, roles);
             await _userManager.AddLoginAsync(user, info);
         }
-        return _mapper.Map<UserDTO>(user);
+        return _mapper.Map<Models.DTOs.Auth.UserDTO>(user);
     }
 
     public async Task<TokenDTO> CreateAuthTokenAsync(string userName, int expDays = -1)

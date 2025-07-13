@@ -38,11 +38,11 @@ public class BetService(IBetRepository betRepository) : IBetService
         if (additionalCapital == 0 && !isAllBetsWithAmount)
         {
             decimal numberCoverage = countNumber / Bets.TOTAL_NUMBERS * Bets.PERCENT_MULTIPLIER;
-<<<<<<< HEAD
-            var maxPayout = maxBetAmount.Value.Amount * Bets.BETS_WIN;
-=======
+
+            //var maxPayout = maxBetAmount.Value.Amount * Bets.BETS_WIN;
+
             var maxPayout = maxBetAmount.Value.Amount * Bets.BETS_WIN * 0.01m;
->>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
+
             result = CreateBetResult(totalAmount, additionalCapital, availableCapital,
                 maxBetAmount.Value.Amount, maxBetAmount.Value.Number, maxPayout,
                 totalAmount - maxPayout, countNumber, numberCoverage);
@@ -72,11 +72,11 @@ public class BetService(IBetRepository betRepository) : IBetService
         }
         return result;
     }
-<<<<<<< HEAD
-    private BetsProfitDTO CreateBetResult(decimal totalRevenue, decimal additionalCapital,
-=======
+
+
+
     private static BetsProfitDTO CreateBetResult(decimal totalRevenue, decimal additionalCapital,
->>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
+
         decimal availableCapital, decimal maxBetAmount, int? maxBetNumber, decimal maxPayout,
         decimal expectedProfit, int numberCount, decimal coveragePercent,
         string? riskLevel = null, string? reason = null, bool? shouldAccept = null)
@@ -97,11 +97,10 @@ public class BetService(IBetRepository betRepository) : IBetService
             ShouldAccept = shouldAccept ?? true
         };
     }
-<<<<<<< HEAD
+
     private void DetermineRiskLevel(BetsProfitDTO result)
-=======
-    private static void DetermineRiskLevel(BetsProfitDTO result)
->>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
+
+
     {
         if (result.MaxPayout > result.AvailableCapital)
         {
@@ -120,11 +119,11 @@ public class BetService(IBetRepository betRepository) : IBetService
         SetRisk(result, risk, reason, accept);
     }
 
-<<<<<<< HEAD
-    private void SetRisk(BetsProfitDTO result, string riskLevel, string reason, bool shouldAccept)
-=======
+
+ 
+
     private static void SetRisk(BetsProfitDTO result, string riskLevel, string reason, bool shouldAccept)
->>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
+
     {
         result.RiskLevel = riskLevel;
         result.Reason = reason;
