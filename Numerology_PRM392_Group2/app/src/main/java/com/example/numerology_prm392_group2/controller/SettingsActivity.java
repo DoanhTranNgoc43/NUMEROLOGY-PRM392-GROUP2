@@ -22,29 +22,19 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch switchNotifications;
     private Switch switchDarkMode;
     private Button btnSaveSettings;
-    private Button btnBack;
     private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        // Initialize UI elements
         switchNotifications = findViewById(R.id.switchNotifications);
         switchDarkMode = findViewById(R.id.switchDarkMode);
         btnSaveSettings = findViewById(R.id.btnSaveSettings);
-        btnBack = findViewById(R.id.btnBack);
-
-        // Initialize SharedPreferences
         prefs = getSharedPreferences("SettingsPrefs", MODE_PRIVATE);
-
-        // Load saved settings
         loadSettings();
-
-        // Set listeners
         btnSaveSettings.setOnClickListener(v -> saveSettings());
-        btnBack.setOnClickListener(v -> navigateBack());
+
     }
 
     private void loadSettings() {
@@ -60,8 +50,6 @@ public class SettingsActivity extends AppCompatActivity {
         editor.putBoolean("notifications_enabled", switchNotifications.isChecked());
         editor.putBoolean("dark_mode_enabled", switchDarkMode.isChecked());
         editor.apply();
-
-        // Show confirmation snackbar
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Cài đặt đã được lưu", Snackbar.LENGTH_SHORT);
         View snackbarView = snackbar.getView();
         ViewGroup.LayoutParams params = snackbarView.getLayoutParams();
@@ -73,7 +61,5 @@ public class SettingsActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    private void navigateBack() {
-        finish(); // Close current activity and return to previous one
-    }
+
 }

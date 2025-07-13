@@ -1,4 +1,4 @@
-package com.example.numerology_prm392_group2;
+package com.example.numerology_prm392_group2.controller;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -10,6 +10,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.numerology_prm392_group2.models.BettingInfo;
+import com.example.numerology_prm392_group2.manager.BettingManager;
+import com.example.numerology_prm392_group2.models.NumberStats;
+import com.example.numerology_prm392_group2.R;
+import com.example.numerology_prm392_group2.adapters.TopNumbersAdapter;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -78,7 +84,6 @@ public class ProbabilityAnalysisActivity extends AppCompatActivity {
             return;
         }
 
-        // Tính toán các thống kê cơ bản
         int totalTickets = bettingList.size();
         double totalAmount = 0;
         Map<String, NumberStats> numberStatsMap = new HashMap<>();
@@ -105,18 +110,14 @@ public class ProbabilityAnalysisActivity extends AppCompatActivity {
 
         int uniqueNumbers = numberStatsMap.size();
 
-        // Hiển thị thống kê cơ bản
         totalTicketsText.setText(String.valueOf(totalTickets));
         totalAmountText.setText(currencyFormat.format(totalAmount));
         uniqueNumbersText.setText(uniqueNumbers + "/100");
 
-        // Phân tích phân phối
         analyzeDistribution(uniqueNumbers, totalAmount);
 
-        // Tính toán lợi nhuận kỳ vọng
         calculateExpectedProfit(totalAmount);
 
-        // Tạo danh sách top numbers
         List<NumberStats> topNumbers = new ArrayList<>(numberStatsMap.values());
         Collections.sort(topNumbers, new Comparator<NumberStats>() {
             @Override
@@ -128,7 +129,6 @@ public class ProbabilityAnalysisActivity extends AppCompatActivity {
         topNumbersAdapter = new TopNumbersAdapter(topNumbers);
         topNumbersRecyclerView.setAdapter(topNumbersAdapter);
 
-        // Đưa ra khuyến nghị
         generateRecommendation(uniqueNumbers, totalAmount, topNumbers);
     }
 
@@ -169,7 +169,6 @@ public class ProbabilityAnalysisActivity extends AppCompatActivity {
     private void generateRecommendation(int uniqueNumbers, double totalAmount, List<NumberStats> topNumbers) {
         StringBuilder recommendation = new StringBuilder();
 
-        // Phân tích dựa trên phân phối
         double distributionScore = (double) uniqueNumbers / 100.0;
 
         if (distributionScore >= 0.8) {

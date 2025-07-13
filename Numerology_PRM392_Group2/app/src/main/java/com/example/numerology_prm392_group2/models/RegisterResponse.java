@@ -10,12 +10,10 @@ public class RegisterResponse {
     private String message;
 
     @SerializedName("data")
-    private Object data; // Can be null based on your API response
+    private Object data;
 
-    // Constructor
     public RegisterResponse() {}
 
-    // Methods
     public boolean isSuccess() {
         return "Success".equalsIgnoreCase(status);
     }

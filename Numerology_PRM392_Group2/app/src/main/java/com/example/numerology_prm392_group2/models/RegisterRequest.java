@@ -12,17 +12,14 @@ public class RegisterRequest {
     @SerializedName("password")
     private String password;
 
-    // Default constructor
     public RegisterRequest() {}
 
-    // Constructor with all fields
     public RegisterRequest(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    // Getters and setters
     public String getUsername() {
         return username;
     }
@@ -57,7 +54,6 @@ public class RegisterRequest {
                 '}';
     }
 
-    // Validation method
     public boolean isValid() {
         return username != null && !username.trim().isEmpty() &&
                 email != null && !email.trim().isEmpty() &&

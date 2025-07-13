@@ -1,4 +1,3 @@
-// BetAdapter.java
 package com.example.numerology_prm392_group2.adapters;
 
 import android.content.Context;
@@ -48,9 +47,8 @@ public class BetAdapter extends RecyclerView.Adapter<BetAdapter.BetViewHolder> {
         holder.numberText.setText(String.valueOf(bet.getNumber()));
         holder.amountText.setText(decimalFormat.format(bet.getAmount()) + " VNĐ");
 
-        // Format date
+
         try {
-            // Assuming the date comes as ISO string, adjust parsing as needed
             holder.dateText.setText(bet.getCreatedDate());
         } catch (Exception e) {
             holder.dateText.setText("N/A");

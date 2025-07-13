@@ -1,4 +1,4 @@
-package com.example.numerology_prm392_group2;
+package com.example.numerology_prm392_group2.models;
 
 public class NumberStats {
     private String number;
@@ -40,7 +40,6 @@ public class NumberStats {
         }
     }
 
-    // Getters
     public String getNumber() { return number; }
     public double getTotalAmount() { return totalAmount; }
     public int getTicketCount() { return ticketCount; }

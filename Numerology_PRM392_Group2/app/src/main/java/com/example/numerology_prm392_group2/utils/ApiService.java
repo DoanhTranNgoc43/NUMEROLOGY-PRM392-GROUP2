@@ -106,15 +106,12 @@ public class ApiService {
 
     public boolean isLoggedIn() {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean isLoggedInFlag = prefs.getBoolean("is_logged_in", false);
         String token = prefs.getString("auth_token", null);
         String userId = prefs.getString("user_id", null);
-
-        // Return true only if we have all required information
-        boolean result = isLoggedInFlag && token != null && !token.isEmpty() && userId != null && !userId.isEmpty();
-        Log.d(TAG, "Login status check - isLoggedIn: " + result);
+        boolean result = token != null && !token.isEmpty() && userId != null && !userId.isEmpty();
         return result;
     }
+
 
     public void saveLoginData(String token, String userId, String userName) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();

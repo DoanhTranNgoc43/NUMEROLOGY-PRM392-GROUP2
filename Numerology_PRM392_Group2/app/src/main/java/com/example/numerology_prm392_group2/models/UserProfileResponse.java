@@ -15,7 +15,6 @@ public class UserProfileResponse {
     @SerializedName("phoneNumber")
     private String phoneNumber;
 
-    // Constructor
     public UserProfileResponse() {}
 
     public UserProfileResponse(String userId, String fullName, String email, String phoneNumber) {
@@ -25,7 +24,6 @@ public class UserProfileResponse {
         this.phoneNumber = phoneNumber;
     }
 
-    // Getters and Setters
     public String getUserId() {
         return userId;
     }

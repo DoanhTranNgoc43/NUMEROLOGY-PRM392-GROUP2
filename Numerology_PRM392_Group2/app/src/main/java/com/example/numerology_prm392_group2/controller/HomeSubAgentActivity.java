@@ -3,6 +3,8 @@ package com.example.numerology_prm392_group2.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
@@ -21,7 +23,6 @@ public class HomeSubAgentActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeSubAgentActivity";
 
-    // UI Components
     private TextView textViewGreeting;
     private AppCompatButton btnNewBet;
     private AppCompatButton btnCustomerList;
@@ -32,10 +33,8 @@ public class HomeSubAgentActivity extends AppCompatActivity {
     private AppCompatButton btnNotification;
     private AppCompatButton btnRevenue;
 
-    private AppCompatButton btnBack;
     private ImageView imageViewAvatar;
 
-    // Data
     private String userName;
     private String userId;
     private ApiService apiService;
@@ -67,9 +66,14 @@ public class HomeSubAgentActivity extends AppCompatActivity {
         btnDailySummary = findViewById(R.id.btnDailySummary);
         btnContactAgent = findViewById(R.id.btnContactAgent);
         btnNotification = findViewById(R.id.btnNotification);
-        btnBack = findViewById(R.id.btnBack);
+
         btnRevenue = findViewById(R.id.btnRevenue);
         apiService = ApiService.getInstance(this);
+        TextView textViewMarquee = findViewById(R.id.textViewMarquee);
+        textViewMarquee.setSelected(true);
+
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        textViewMarquee.startAnimation(fadeIn);
     }
 
     private void loadUserData() {
@@ -86,7 +90,6 @@ public class HomeSubAgentActivity extends AppCompatActivity {
             textViewGreeting.setText("Xin chào, SubAgent");
         }
     }
-
     private void setupClickListeners() {
         imageViewAvatar.setOnClickListener(v -> {
             Log.d(TAG, "Avatar clicked");
@@ -98,14 +101,11 @@ public class HomeSubAgentActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
         btnCustomerList.setOnClickListener(v -> {
             showFeatureDialog("Danh sách khách hàng", "Chức năng danh sách khách hàng đang được phát triển");
-            // TODO: Navigate to CustomerListActivity
             // Intent intent = new Intent(HomeSubAgentActivity.this, CustomerListActivity.class);
             // startActivity(intent);
         });
-
 
         btnPersonalInfo.setOnClickListener(v -> {
              Intent intent = new Intent(HomeSubAgentActivity.this, PersonalInfoActivity.class);
@@ -113,21 +113,17 @@ public class HomeSubAgentActivity extends AppCompatActivity {
         });
 
         btnBetHistory.setOnClickListener(v -> {
-            showFeatureDialog("Lịch sử", "Chức năng lịch sử ghi đề đang được phát triển");
-            // TODO: Navigate to BetHistoryActivity
-            // Intent intent = new Intent(HomeSubAgentActivity.this, BetHistoryActivity.class);
-            // startActivity(intent);
-        });
 
+             Intent intent = new Intent(HomeSubAgentActivity.this, BetHistoryActivity.class);
+             startActivity(intent);
+        });
 
         btnDailySummary.setOnClickListener(v -> {
             Log.d(TAG, "Daily Summary button clicked");
             showFeatureDialog("Tổng kết ngày", "Chức năng tổng kết ngày đang được phát triển");
-            // TODO: Navigate to DailySummaryActivity
             // Intent intent = new Intent(HomeSubAgentActivity.this, DailySummaryActivity.class);
             // startActivity(intent);
         });
-
 
         btnContactAgent.setOnClickListener(v -> {
              Intent intent = new Intent(HomeSubAgentActivity.this, ContactAgentActivity.class);
@@ -179,21 +175,12 @@ public class HomeSubAgentActivity extends AppCompatActivity {
 
     private void performLogout() {
         try {
-            // Clear login data using ApiService
             apiService.clearLoginData();
-
-            // Show logout message
-            Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
-
-            // Navigate back to login
             Intent intent = new Intent(HomeSubAgentActivity.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-
-            Log.d(TAG, "Logout completed successfully");
         } catch (Exception e) {
-            Log.e(TAG, "Error during logout", e);
             Toast.makeText(this, "Lỗi khi đăng xuất", Toast.LENGTH_SHORT).show();
         }
     }
@@ -202,7 +189,6 @@ public class HomeSubAgentActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // Check if user is still logged in
         if (apiService != null && !apiService.isLoggedIn()) {
             Log.d(TAG, "User not logged in, redirecting to login");
             Intent intent = new Intent(HomeSubAgentActivity.this, Login.class);

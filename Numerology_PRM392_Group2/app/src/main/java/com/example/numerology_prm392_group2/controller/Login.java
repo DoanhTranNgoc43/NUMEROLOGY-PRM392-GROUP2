@@ -264,8 +264,6 @@ public class Login extends AppCompatActivity {
     private void setLoadingState(boolean isLoading) {
         loginButton.setEnabled(!isLoading);
         loginButton.setText(isLoading ? "Đang đăng nhập..." : "Đăng Nhập");
-
-        // Disable input fields during loading
         emailEditText.setEnabled(!isLoading);
         passwordEditText.setEnabled(!isLoading);
         rememberMeCheckbox.setEnabled(!isLoading);
@@ -283,6 +281,5 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Retrofit automatically manages cleanup
     }
 }

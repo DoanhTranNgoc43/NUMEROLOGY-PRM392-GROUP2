@@ -46,7 +46,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_1"
+                android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="20dp"
                 android:hint="Họ và Tên"
                 android:inputType="textPersonName"
@@ -62,7 +62,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/edit_text_background"
-                android:drawableStart="@drawable/ic_2"
+                android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="20dp"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
@@ -97,28 +97,12 @@
                 android:drawablePadding="20dp"
                 android:paddingStart="20dp"
                 android:text="Lưu Thay Đổi"
-                android:textAlignment="viewStart"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <!-- Back Button -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buttonBack"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/btn_background_2"
-                android:drawablePadding="20dp"
-                android:paddingStart="20dp"
-                android:text="Quay Lại"
-                android:textAlignment="viewStart"
-                android:textColor="#ffffff"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+
 
         </LinearLayout>
     </ScrollView>

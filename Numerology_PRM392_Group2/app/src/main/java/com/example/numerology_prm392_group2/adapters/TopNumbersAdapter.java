@@ -1,4 +1,4 @@
-package com.example.numerology_prm392_group2;
+package com.example.numerology_prm392_group2.adapters;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.numerology_prm392_group2.R;
+import com.example.numerology_prm392_group2.models.NumberStats;
 
 import java.text.NumberFormat;
 import java.util.List;

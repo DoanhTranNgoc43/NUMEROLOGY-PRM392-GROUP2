@@ -24,7 +24,6 @@ public class BetRequest {
         this.userId = userId;
     }
 
-    // Getters and Setters
     public String getBettorName() {
         return bettorName;
     }

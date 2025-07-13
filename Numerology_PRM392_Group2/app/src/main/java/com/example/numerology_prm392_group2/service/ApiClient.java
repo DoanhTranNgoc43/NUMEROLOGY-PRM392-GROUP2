@@ -23,11 +23,8 @@ public class ApiClient {
     }
 
     private static Retrofit createRetrofit() {
-        // Logging interceptor để debug
         var loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        // Tạo OkHttpClient (compatible với tất cả Android versions)
         var httpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     var original = chain.request();
@@ -39,16 +36,12 @@ public class ApiClient {
                     return chain.proceed(request);
                 })
                 .addInterceptor(loggingInterceptor)
-                .connectTimeout(15, TimeUnit.SECONDS)  // Dùng TimeUnit thay vì Duration
+                .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15, TimeUnit.SECONDS)
                 .writeTimeout(15, TimeUnit.SECONDS)
                 .build();
 
         return new Retrofit.Builder()
-                // Cách 1: Dùng BuildConfig (cần enable buildFeatures.buildConfig = true)
-                //.baseUrl(BuildConfig.API_BASE_URL)
-
-                // Cách 2: Dùng constant (nếu BuildConfig không work)
                 .baseUrl(BASE_URL)
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())

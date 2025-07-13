@@ -57,7 +57,6 @@ public class BetListActivity extends AppCompatActivity {
         betList = new ArrayList<>();
         decimalFormat = new DecimalFormat("#,###");
 
-        // Setup toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Danh Sách Cược");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -142,14 +141,11 @@ public class BetListActivity extends AppCompatActivity {
             betList.addAll(response.getBets());
             betAdapter.notifyDataSetChanged();
 
-            // Update statistics
             updateStatistics(response.getTotalAmount(), response.getTotalCount());
 
-            // Show list, hide empty view
             recyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         } else {
-            // Show empty view, hide list
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
             updateStatistics(0, 0);
@@ -185,7 +181,6 @@ public class BetListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh list when activity resumes
         loadBetList();
     }
 }

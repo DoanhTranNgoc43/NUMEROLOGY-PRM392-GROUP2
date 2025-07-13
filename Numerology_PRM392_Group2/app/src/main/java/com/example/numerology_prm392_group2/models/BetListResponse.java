@@ -21,7 +21,6 @@ public class BetListResponse {
 
     public BetListResponse() {}
 
-    // Getters and Setters
     public boolean isSuccess() {
         return "Success".equalsIgnoreCase(status);
     }

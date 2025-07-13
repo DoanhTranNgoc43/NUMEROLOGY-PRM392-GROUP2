@@ -16,6 +16,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/textViewMarquee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_background"
+                android:text="🎯 Hôm nay là ngày may mắn của bạn – Đừng bỏ lỡ cơ hội phát tài! 🎯"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="10dp"
+                android:fontFamily="sans-serif-medium"
+                android:animation="@anim/fade_in" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -61,7 +78,6 @@
                     android:id="@+id/imageViewBell"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_marginEnd="16dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -87,7 +103,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/btn_background_1"
-                        android:drawableStart="@drawable/ic_1"
+                        android:drawableStart="@drawable/ic_2"
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
                         android:text="Ghi đề mới"
@@ -105,7 +121,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/btn_background_1"
-                        android:drawableStart="@drawable/ic_2"
+                        android:drawableStart="@drawable/ic_list"
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
                         android:text="Danh sách người chơi"
@@ -141,7 +157,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/btn_background_1"
-                        android:drawableStart="@drawable/ic_4"
+                        android:drawableStart="@drawable/ic_history"
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
                         android:text="Lịch sử"
@@ -177,10 +193,9 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/btn_background_1"
-
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
-                        android:drawableStart="@drawable/ic_2"
+                        android:drawableStart="@drawable/ic_phone"
                         android:text="Liên hệ đại lý chính"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -212,17 +227,14 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/btn_background_1"
-
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
-                        android:drawableStart="@drawable/ic_2"
+                        android:drawableStart="@drawable/ic_revenue"
                         android:text="Doanh thu"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textAlignment="viewStart"
                         style="@android:style/Widget.Button" />
-
-
 
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

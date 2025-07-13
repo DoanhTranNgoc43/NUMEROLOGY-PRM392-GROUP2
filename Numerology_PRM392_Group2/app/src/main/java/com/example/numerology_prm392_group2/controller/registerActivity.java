@@ -38,7 +38,6 @@ public class registerActivity extends AppCompatActivity {
     private MaterialButton signUpButton;
     private View signInText;
 
-    // TextInputLayout references for better error handling
     private TextInputLayout fullNameLayout;
     private TextInputLayout emailLayout;
     private TextInputLayout passwordLayout;
@@ -63,21 +62,16 @@ public class registerActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        // Initialize EditText fields
         fullNameEditText = findViewById(R.id.fullNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
         signUpButton = findViewById(R.id.signUpButton);
         signInText = findViewById(R.id.signInText);
-
-        // Initialize TextInputLayout fields for better error handling
         fullNameLayout = (TextInputLayout) fullNameEditText.getParent().getParent();
         emailLayout = (TextInputLayout) emailEditText.getParent().getParent();
         passwordLayout = (TextInputLayout) passwordEditText.getParent().getParent();
         confirmPasswordLayout = (TextInputLayout) confirmPasswordEditText.getParent().getParent();
-
-        // Initialize API service
         apiService = ApiService.getInstance(this);
 
         Log.d(TAG, "Views initialized successfully");
@@ -89,37 +83,28 @@ public class registerActivity extends AppCompatActivity {
             performRegister();
         });
 
-        // Sign in click listener
         signInText.setOnClickListener(v -> {
             Log.d(TAG, "Sign in text clicked");
-            // Navigate back to login activity
             Intent intent = new Intent(registerActivity.this, Login.class);
             startActivity(intent);
-            finish(); // Close register activity
+            finish();
         });
     }
 
     private void performRegister() {
         Log.d(TAG, "Starting registration process");
-
-        // Get input values
         String fullName = fullNameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
         Log.d(TAG, "Input values - Name: " + fullName + ", Email: " + email + ", Password length: " + password.length());
-
-        // Validate input
         if (!validateInput(fullName, email, password, confirmPassword)) {
             Log.d(TAG, "Input validation failed");
             return;
         }
-
-        // Show loading state
         setLoadingState(true);
 
-        // Create register request
         RegisterRequest registerRequest = new RegisterRequest(fullName, email, password);
         Log.d(TAG, "Created RegisterRequest with username: " + fullName);
 
@@ -152,10 +137,7 @@ public class registerActivity extends AppCompatActivity {
     private boolean validateInput(String fullName, String email, String password, String confirmPassword) {
         boolean isValid = true;
 
-        // Clear previous errors
         clearAllErrors();
-
-        // Validate full name
         if (fullName.isEmpty()) {
             setError(fullNameLayout, "Vui lòng nhập tên người dùng");
             if (isValid) fullNameEditText.requestFocus();
@@ -170,7 +152,6 @@ public class registerActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        // Validate email
         if (email.isEmpty()) {
             setError(emailLayout, "Vui lòng nhập email");
             if (isValid) emailEditText.requestFocus();
@@ -181,7 +162,6 @@ public class registerActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        // Validate password
         if (password.isEmpty()) {
             setError(passwordLayout, "Vui lòng nhập mật khẩu");
             if (isValid) passwordEditText.requestFocus();
@@ -225,7 +205,6 @@ public class registerActivity extends AppCompatActivity {
         Log.d(TAG, "Handling registration success - Status: " + response.getStatus() + ", Message: " + response.getMessage());
 
         if (response.isSuccess()) {
-            // Show the message from the server
             String successMessage = response.getMessage();
             if (successMessage == null || successMessage.trim().isEmpty()) {
                 successMessage = "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.";
@@ -233,7 +212,6 @@ public class registerActivity extends AppCompatActivity {
 
             showSuccessDialog("Thành công", successMessage, () -> {
                 Intent intent = new Intent(registerActivity.this, Login.class);
-                // Pre-fill email from the form
                 String email = emailEditText.getText().toString().trim();
                 if (!email.isEmpty()) {
                     intent.putExtra("email", email);
@@ -242,7 +220,6 @@ public class registerActivity extends AppCompatActivity {
                 finish();
             });
         } else {
-            // Server returned success=false
             String errorMessage = response.getMessage();
             if (errorMessage == null || errorMessage.trim().isEmpty()) {
                 errorMessage = "Đăng ký thất bại. Vui lòng thử lại.";
@@ -327,7 +304,6 @@ public class registerActivity extends AppCompatActivity {
         androidx.appcompat.app.AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Auto-dismiss after 3 seconds
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (dialog.isShowing() && !isFinishing() && !isDestroyed()) {
                 dialog.dismiss();

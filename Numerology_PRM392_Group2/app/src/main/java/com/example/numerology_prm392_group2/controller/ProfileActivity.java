@@ -35,16 +35,15 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Map UI elements to XML IDs
-        profileImage = findViewById(R.id.imageView2); // Profile image
-        fullNameText = findViewById(R.id.textView);   // Name
-        emailText = findViewById(R.id.textView2);     // Email
-        btnBackTo = findViewById(R.id.btnBackTo);         // "Back to Main page" button
-        btnSettings = findViewById(R.id.btnSettings); // "Cài đặt" button
-        btnList = findViewById(R.id.btnList); // "Danh sách khách hàng" button
-        btnPersonalInfo = findViewById(R.id.btnPersonalInfo); // "Thông Tin Cá Nhân" button
-        btnNotifications = findViewById(R.id.btnNoti); // "Thông báo từ đại lý" button
-        btnrevenue = findViewById(R.id.btnReve); // "Doanh thu" button
+        profileImage = findViewById(R.id.imageView2);
+        fullNameText = findViewById(R.id.textView);
+        emailText = findViewById(R.id.textView2);
+        btnBackTo = findViewById(R.id.btnBackTo);
+        btnSettings = findViewById(R.id.btnSettings);
+        btnList = findViewById(R.id.btnList);
+        btnPersonalInfo = findViewById(R.id.btnPersonalInfo);
+        btnNotifications = findViewById(R.id.btnNoti);
+        btnrevenue = findViewById(R.id.btnReve);
 
         loadUserInfo();
 
@@ -99,7 +98,6 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Reload user info to reflect changes from PersonalInfoActivity
         loadUserInfo();
     }
 
@@ -115,12 +113,11 @@ public class ProfileActivity extends AppCompatActivity {
         if (!avatarUrl.isEmpty()) {
             Glide.with(this).load(avatarUrl).into(profileImage);
         } else {
-            // Set default profile image if no URL is provided
             profileImage.setImageResource(R.drawable.profile);
         }
     }
 
     private void navigateBack() {
-        finish(); // Close current activity and return to previous one
+        finish();
     }
 }

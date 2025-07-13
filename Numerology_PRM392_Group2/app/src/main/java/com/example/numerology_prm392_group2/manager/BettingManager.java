@@ -1,4 +1,6 @@
-package com.example.numerology_prm392_group2;
+package com.example.numerology_prm392_group2.manager;
+
+import com.example.numerology_prm392_group2.models.BettingInfo;
 
 import java.util.ArrayList;
 import java.util.List;

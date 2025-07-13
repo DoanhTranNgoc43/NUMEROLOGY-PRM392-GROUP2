@@ -19,10 +19,8 @@ public class ErrorResponse {
     @SerializedName("timestamp")
     private String timestamp;
 
-    // Constructor
     public ErrorResponse() {}
 
-    // Getters và Setters
     public boolean isSuccess() {
         return success;
     }

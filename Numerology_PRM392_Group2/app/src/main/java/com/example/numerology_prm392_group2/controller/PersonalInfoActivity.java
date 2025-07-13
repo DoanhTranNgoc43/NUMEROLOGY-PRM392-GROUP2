@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.numerology_prm392_group2.R;
 import com.example.numerology_prm392_group2.models.LoginResponse;
+import com.example.numerology_prm392_group2.models.UpdateProfileRequest;
 import com.example.numerology_prm392_group2.models.UserProfileResponse;
 import com.example.numerology_prm392_group2.utils.ApiService;
 
@@ -26,7 +27,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private static final String TAG = "PersonalInfoActivity";
     private ImageView profileImage;
     private EditText editTextFullName, editTextEmail, editTextPhoneNumber;
-    private Button buttonSave, buttonBack;
+    private Button buttonSave;
     private ApiService apiService;
 
     @Override
@@ -41,13 +42,11 @@ public class PersonalInfoActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
         buttonSave = findViewById(R.id.buttonSave);
-        buttonBack = findViewById(R.id.buttonBack);
 
         loadUserInfoFromAPI();
 
         buttonSave.setOnClickListener(v -> saveUserInfo());
 
-        buttonBack.setOnClickListener(v -> navigateBack());
     }
 
     private void loadUserInfoFromAPI() {
@@ -59,12 +58,10 @@ public class PersonalInfoActivity extends AppCompatActivity {
             return;
         }
 
-        // Log authentication details for debugging
         Log.d(TAG, "Making API call with token: " + (apiService.getAuthToken() != null ? "present" : "null"));
         Log.d(TAG, "User ID: " + apiService.getUserId());
         Log.d(TAG, "Base URL: " + apiService.getBaseUrl());
 
-        // Make API call to get user profile
         Call<UserProfileResponse> call = apiService.getApiInterface().getUserProfile();
         call.enqueue(new Callback<UserProfileResponse>() {
             @Override
@@ -169,17 +166,12 @@ public class PersonalInfoActivity extends AppCompatActivity {
             return;
         }
 
-        UserProfileResponse userProfile = new UserProfileResponse();
-        userProfile.setFullName(fullName);
-        userProfile.setEmail(email);
-        userProfile.setPhoneNumber(phoneNumber);
-
-        Call<Void> call = apiService.getApiInterface().updateUserProfile(userProfile);
+        UpdateProfileRequest updateProfileRequest= new UpdateProfileRequest(fullName, email, phoneNumber);
+        Call<Void> call = apiService.getApiInterface().updateUserProfile(updateProfileRequest);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Save to SharedPreferences
                     SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("full_name", fullName);
@@ -188,25 +180,34 @@ public class PersonalInfoActivity extends AppCompatActivity {
                     editor.apply();
 
                     Toast.makeText(PersonalInfoActivity.this, "Đã cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
-
                     Intent intent = new Intent(PersonalInfoActivity.this, HomeSubAgentActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Log.e(TAG, "Failed to update user profile: " + response.code());
-                    Toast.makeText(PersonalInfoActivity.this, "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
+                    String errorMessage = "Cập nhật thông tin thất bại";
+                    try {
+                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "";
+                        if (response.code() == 400 && errorBody.contains("Email is already in use")) {
+                            errorMessage = "Email đã được sử dụng.";
+                        } else if (response.code() == 401) {
+                            errorMessage = "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.";
+                        } else if (response.code() == 404) {
+                            errorMessage = "Không tìm thấy người dùng.";
+                        }
+                        Log.e(TAG, "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error reading error body", e);
+                    }
+                    Toast.makeText(PersonalInfoActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.e(TAG, "API call failed", t);
-                Toast.makeText(PersonalInfoActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfoActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private void navigateBack() {
-        finish();
-    }
 }

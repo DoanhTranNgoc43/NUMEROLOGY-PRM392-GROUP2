@@ -12,10 +12,8 @@ public class LoginResponse {
     @SerializedName("data")
     private LoginData data;
 
-    // Constructor
     public LoginResponse() {}
 
-    // Getters và Setters
     public boolean isSuccess() {
         return "Success".equalsIgnoreCase(status);
     }
@@ -44,7 +42,6 @@ public class LoginResponse {
         this.data = data;
     }
 
-    // Convenience methods to access nested data
     public String getToken() {
         return data != null ? data.getToken() : null;
     }
@@ -53,7 +50,6 @@ public class LoginResponse {
         return data != null ? data.getUser() : null;
     }
 
-    // LoginData class to hold the nested data
     public static class LoginData {
         @SerializedName("token")
         private String token;
@@ -80,7 +76,6 @@ public class LoginResponse {
         }
     }
 
-    // User class
     public static class User {
         @SerializedName("id")
         private String id;
@@ -94,10 +89,8 @@ public class LoginResponse {
         @SerializedName("phone")
         private String phone;
 
-        // Constructor
         public User() {}
 
-        // Getters và Setters
         public String getId() {
             return id;
         }
