@@ -1,13 +1,7 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Numerology.Core.Exceptions;
 using Numerology.Core.Interfaces;
-using Numerology.Core.Models.Configs;
 using Numerology.Core.Models.DTOs.Auth;
 using Numerology.Core.Models.DTOs.Token;
 using Numerology.Core.Models.Entities;
@@ -15,23 +9,13 @@ using Numerology.Core.Repositories;
 
 namespace Numerology.Core.Services;
 
-public class AuthService : IAuthService
+public class AuthService(SignInManager<User> signInManager,
+ UserManager<User> userManager, IUserRepository userRepository, ITokenService tokenService) : IAuthService
 {
-    private readonly JwtConfig _jwtConfig;
-    private readonly SymmetricSecurityKey _key;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
-    private readonly IUserRepository _userRepository;
-
-    public AuthService(IOptions<JwtConfig> jwtConfig, SignInManager<User> signInManager,
-     UserManager<User> userManager, IUserRepository userRepository)
-    {
-        _jwtConfig = jwtConfig.Value;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.SigningKey));
-        _signInManager = signInManager;
-        _userManager = userManager;
-        _userRepository = userRepository;
-    }
+    private readonly SignInManager<User> _signInManager = signInManager;
+    private readonly UserManager<User> _userManager = userManager;
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly ITokenService _tokenService = tokenService;
 
     public async Task<bool> SigninUserAsync(LoginDTO loginDTO)
     {
@@ -59,7 +43,7 @@ public class AuthService : IAuthService
         }
         var user = await _userRepository.GetUserByUsernameAsync(username)
             ?? throw new NotFoundException($"User not found with username: {username}");
-        user.RefreshToken = GenerateRefreshToken();
+        user.RefreshToken = _tokenService.GenerateRefreshToken();
         if (expDays > 0) user.RefreshTokenExpiryTime = DateTime.Now.AddDays(expDays);
         await _userManager.UpdateAsync(user);
         var claims = new List<Claim>
@@ -70,10 +54,11 @@ public class AuthService : IAuthService
         };
         return new TokenDTO()
         {
-            AccessToken = GenerateAccessToken(claims),
+            AccessToken = _tokenService.GenerateAccessToken(claims),
             RefreshToken = user.RefreshToken
         };
     }
+<<<<<<< HEAD
 
     public async Task<User> GetUserByUsernameAsync(string username)
     {
@@ -101,6 +86,8 @@ public class AuthService : IAuthService
         return tokenHandle.WriteToken(token);
     }
 
+=======
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
     public async Task<bool> CheckUserNameExists(string username)
     {
         if (string.IsNullOrEmpty(username))
@@ -160,6 +147,7 @@ public class AuthService : IAuthService
         return result.Succeeded;
     }
 
+<<<<<<< HEAD
     private string GenerateRefreshToken()
     {
         var randomNumber = new byte[64];
@@ -180,4 +168,6 @@ public class AuthService : IAuthService
             PhoneNumber = user.PhoneNumber ?? string.Empty
         };
     }
+=======
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
 }

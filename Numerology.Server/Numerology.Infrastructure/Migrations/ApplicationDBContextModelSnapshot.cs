@@ -28,6 +28,7 @@ namespace Numerology.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
+<<<<<<< HEAD
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
@@ -47,22 +48,44 @@ namespace Numerology.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("tblRoles", (string)null);
+=======
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
 
                     b.HasData(
                         new
                         {
+<<<<<<< HEAD
                             Id = "6ea01836-f27e-4da5-b2d4-3ca91a599942",
+=======
+                            Id = "8cf89f78-6561-4a8e-b121-5c5e87c3913b",
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
                             Name = "SubAgent",
                             NormalizedName = "SUBAGENT"
                         },
                         new
                         {
+<<<<<<< HEAD
                             Id = "753996c1-f76c-44b5-8b23-fd83a024eae6",
+=======
+                            Id = "a84968cc-bda4-4633-a0ca-46e4ace734da",
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
                             Name = "GeneralAgent",
                             NormalizedName = "GENERALAGENT"
                         });
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -169,6 +192,8 @@ namespace Numerology.Infrastructure.Migrations
                     b.ToTable("tblUserTokens", (string)null);
                 });
 
+=======
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
             modelBuilder.Entity("Numerology.Core.Models.Entities.Bets", b =>
                 {
                     b.Property<Guid>("Id")
@@ -190,9 +215,14 @@ namespace Numerology.Infrastructure.Migrations
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("NameUser")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<string>("Region")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -200,19 +230,127 @@ namespace Numerology.Infrastructure.Migrations
                     b.Property<string>("RiskLevel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+=======
+                    b.HasKey("Id");
 
-                    b.Property<int>("TicketCount")
+                    b.ToTable("tblBets", (string)null);
+                });
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
+
+            modelBuilder.Entity("Numerology.Core.Models.Entities.LotteryResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Prize1")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+=======
+                    b.Property<int>("Prize2_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize2_2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize3_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize3_2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize3_3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize3_4")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize3_5")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize3_6")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize4_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize4_2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize4_3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize4_4")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize5_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize5_2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize5_3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize5_4")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize5_5")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize5_6")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize6_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize6_2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize6_3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize7_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize7_2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize7_3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Prize7_4")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Special")
+                        .HasColumnType("int");
+>>>>>>> 8615bf1956a40d74f1d3d179c17f00837dbcba1f
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Created")
+                        .IsUnique();
 
-                    b.ToTable("tblBets", (string)null);
+                    b.ToTable("tblLotteryResult", (string)null);
                 });
 
             modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
@@ -308,68 +446,6 @@ namespace Numerology.Infrastructure.Migrations
                     b.ToTable("tblUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("Numerology.Core.Models.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("Numerology.Core.Models.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Numerology.Core.Models.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("Numerology.Core.Models.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Numerology.Core.Models.Entities.Bets", b =>
-                {
-                    b.HasOne("Numerology.Core.Models.Entities.User", "User")
-                        .WithMany("Bets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
@@ -378,11 +454,6 @@ namespace Numerology.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
-                {
-                    b.Navigation("Bets");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,11 +13,15 @@ public static class ServiceExtension
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IBetService, BetService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ILotteryResultService, LotteryResultService>();
         #endregion
 
         #region Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBetRepository, BetRepository>();
+        services.AddScoped<ILotteryResultRepository, LotteryResultRepository>();
         #endregion
         return services;
     }
