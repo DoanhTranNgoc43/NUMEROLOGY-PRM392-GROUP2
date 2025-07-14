@@ -93,7 +93,7 @@
             android:layout_height="56dp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
-            android:text="📊 Xác Suất"
+            android:text="📊 XSTK"
             android:textSize="14sp"
             app:cornerRadius="16dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
@@ -105,7 +105,7 @@
             android:layout_weight="1"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:text="KQ XSMB"
+            android:text="XSMB"
             android:textSize="14sp"
             app:cornerRadius="16dp"
             style="@style/Widget.MaterialComponents.Button" />
@@ -116,7 +116,7 @@
             android:layout_height="56dp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:text="📤 Xuất File"
+            android:text="📤 Tệp"
             android:textSize="14sp"
             app:cornerRadius="16dp"
             app:iconGravity="textStart"
@@ -125,7 +125,7 @@
             android:id="@+id/saveListButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lưu danh sách"
+            android:text="Lưu"
             app:icon="@drawable/ic_save" />
     </LinearLayout>
 

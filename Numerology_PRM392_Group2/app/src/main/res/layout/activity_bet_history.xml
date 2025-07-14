@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/primary_color"
-            app:title="📜 Lịch Sử Danh Sách Cược"
+            app:title="Lịch Sử Danh Sách Cược"
             app:titleTextColor="@color/white"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>

@@ -119,10 +119,8 @@ public class HomeSubAgentActivity extends AppCompatActivity {
         });
 
         btnDailySummary.setOnClickListener(v -> {
-            Log.d(TAG, "Daily Summary button clicked");
-            showFeatureDialog("Tổng kết ngày", "Chức năng tổng kết ngày đang được phát triển");
-            // Intent intent = new Intent(HomeSubAgentActivity.this, DailySummaryActivity.class);
-            // startActivity(intent);
+             Intent intent = new Intent(HomeSubAgentActivity.this, DailySummaryActivity.class);
+             startActivity(intent);
         });
 
         btnContactAgent.setOnClickListener(v -> {

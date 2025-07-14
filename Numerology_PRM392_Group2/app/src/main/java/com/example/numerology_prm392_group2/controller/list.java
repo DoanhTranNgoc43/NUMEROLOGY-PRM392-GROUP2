@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +30,9 @@ import com.example.numerology_prm392_group2.service.LotteryService;
 import com.example.numerology_prm392_group2.service.PayoutCalculator;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -59,7 +64,7 @@ public class list extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list);
-
+        BettingManager.getInstance().init(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -89,9 +94,89 @@ public class list extends AppCompatActivity {
     private void setupRecyclerView() {
         bettingListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<BettingInfo> bettingList = BettingManager.getInstance().getBettingList();
-        adapter = new BettingAdapter(bettingList);
+        adapter = new BettingAdapter(bettingList, new BettingAdapter.OnItemClickListener() {
+            @Override
+            public void onEditClick(BettingInfo bettingInfo, int position) {
+                showEditDialog(bettingInfo, position);
+            }
+
+            @Override
+            public void onDeleteClick(BettingInfo bettingInfo, int position) {
+                showDeleteConfirmationDialog(bettingInfo, position);
+            }
+        });
         bettingListRecyclerView.setAdapter(adapter);
     }
+    private void showEditDialog(BettingInfo bettingInfo, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_edit_betting, null);
+        builder.setView(dialogView);
+
+        TextInputEditText nameInput = dialogView.findViewById(R.id.editBettorNameInput);
+        TextInputEditText numberInput = dialogView.findViewById(R.id.editBettingNumberInput);
+        TextInputEditText amountInput = dialogView.findViewById(R.id.editBettingAmountInput);
+        TextInputLayout nameLayout = dialogView.findViewById(R.id.editBettorNameLayout);
+        TextInputLayout numberLayout = dialogView.findViewById(R.id.editBettingNumberLayout);
+        TextInputLayout amountLayout = dialogView.findViewById(R.id.editBettingAmountLayout);
+
+        nameInput.setText(bettingInfo.getBettorName());
+        numberInput.setText(bettingInfo.getBettingNumber());
+        amountInput.setText(String.valueOf(bettingInfo.getBettingAmount()));
+
+        builder.setTitle("Chỉnh sửa thông tin cược")
+                .setPositiveButton("Lưu", (dialog, which) -> {
+                    String name = nameInput.getText().toString().trim();
+                    String number = numberInput.getText().toString().trim();
+                    String amount = amountInput.getText().toString().trim();
+
+                    // Validation
+                    boolean isValid = true;
+                    if (name.isEmpty()) {
+                        nameLayout.setError("Vui lòng nhập tên người cược");
+                        isValid = false;
+                    } else {
+                        nameLayout.setError(null);
+                    }
+                    if (!number.matches("\\d{2}")) {
+                        numberLayout.setError("Số cược phải là 2 chữ số");
+                        isValid = false;
+                    } else {
+                        numberLayout.setError(null);
+                    }
+                    if (amount.isEmpty() || !amount.matches("\\d+\\.?\\d*")) {
+                        amountLayout.setError("Vui lòng nhập số tiền hợp lệ");
+                        isValid = false;
+                    } else {
+                        amountLayout.setError(null);
+                    }
+
+                    if (isValid) {
+                        bettingInfo.setBettorName(name);
+                        bettingInfo.setBettingNumber(number);
+                        bettingInfo.setBettingAmount(Double.parseDouble(amount));
+                        bettingInfo.resetWinnerStatus();
+                        BettingManager.getInstance().updateBettingList(BettingManager.getInstance().getBettingList());
+                        adapter.notifyItemChanged(position);
+
+                    }
+                })
+                .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+    private void showDeleteConfirmationDialog(BettingInfo bettingInfo, int position) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc muốn xóa thông tin cược của " + bettingInfo.getBettorName() + "?")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    BettingManager.getInstance().removeBetting(position);
+                    List<BettingInfo> updatedList = BettingManager.getInstance().getBettingList();
+                    adapter.updateList(updatedList);
+                })
+                .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
 
     private void setupClickListeners() {
         probabilityAnalysisButton.setOnClickListener(v -> openProbabilityAnalysis());
@@ -128,14 +213,15 @@ public class list extends AppCompatActivity {
                 .setMessage("Vui lòng đợi...")
                 .setCancelable(false)
                 .show();
-
-        lotteryService.getResultByDate("2025-07-11", new LotteryService.LotteryResultCallback(){
+//        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//        lotteryService.getResultByDate(today, new LotteryService.LotteryResultCallback(){
+       lotteryService.getResultByDate("2025-07-13", new LotteryService.LotteryResultCallback(){
             @Override
             public void onSuccess(LotteryResult result) {
                 runOnUiThread(() -> {
                     loadingDialog.dismiss();
                     if (result == null || result.getSpecialPrize() == null) {
-                        showDialog("Lỗi", "Không tìm thấy kết quả xổ số cho ngày này.");
+                        showDialog(" Chưa có kết quả,", "Kết quả xổ số được cập nhật vào lúc 18:30 hàng ngày.");
                         return;
                     }
 

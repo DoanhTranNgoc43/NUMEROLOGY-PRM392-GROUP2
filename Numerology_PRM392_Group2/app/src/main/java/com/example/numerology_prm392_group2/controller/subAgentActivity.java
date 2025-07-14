@@ -65,7 +65,7 @@ public class subAgentActivity extends AppCompatActivity {
         showListButton = findViewById(R.id.showListButton);
         checkResultsButton = findViewById(R.id.checkResultsButton);
         showAgentsButton = findViewById(R.id.showAgentsButton);
-
+        BettingManager.getInstance().init(this);
         apiService = ApiService.getInstance(this);
         lotteryService = LotteryService.getInstance();
         payoutCalculator = PayoutCalculator.getInstance();
