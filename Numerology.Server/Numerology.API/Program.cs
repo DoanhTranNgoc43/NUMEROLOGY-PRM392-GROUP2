@@ -3,25 +3,27 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Numerology.API.Mappers;
 using Numerology.API.ServiceExtension;
 using Numerology.Core.Constants;
 using Numerology.Core.Models;
 using Numerology.Core.Models.Configs;
 using Numerology.Core.Models.Entities;
+using Numerology.Core.Repositories;
 using Numerology.Infrastructure.Data;
 using System.Text;
-using Hangfire;
 
 namespace Numerology.API
 {
     public class Program
     {
-        [Obsolete]
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddHttpClient();
+
+
+
             builder.Services.AddControllers()
              .ConfigureApiBehaviorOptions(options =>
              {
@@ -41,19 +43,18 @@ namespace Numerology.API
                      return new BadRequestObjectResult(response);
                  };
              });
-            builder.Services.Configure<GoogleConfig>(builder.Configuration.GetSection("Google"));
             var jwtSection = builder.Configuration.GetSection("JWT");
             builder.Services.Configure<JwtConfig>(jwtSection);
             var jwtConfig = jwtSection.Get<JwtConfig>()
                  ?? throw new Exception("Jwt options have not been set!");
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
             {
-                options.UseMySql(
-                builder.Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")),
-                mysqlOptions => mysqlOptions.EnableRetryOnFailure()
-                    );
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    sqlOptions => sqlOptions.EnableRetryOnFailure()
+                );
             });
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy(Policy.SINGLE_PAGE_APP, policy =>
@@ -63,11 +64,40 @@ namespace Numerology.API
                     policy.AllowAnyMethod();
                     policy.AllowCredentials();
                 });
-            });
+            }); 
+           
+
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Numerology.API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {your token}'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+            });
             builder.Services.AddAutoMapper(typeof(MapperProfile));
             builder.Services.AddIdentity<User, IdentityRole>(options =>
             {
@@ -114,7 +144,6 @@ namespace Numerology.API
             };
         });
             builder.Services.RegisterService();
-            builder.Services.AddHangfireServices(builder.Configuration);
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
@@ -123,21 +152,11 @@ namespace Numerology.API
             }
             app.UseCors(Policy.SINGLE_PAGE_APP);
             app.UseHttpsRedirection();
-
-            // Hangfire Middleware
-            app.UseHangfireDashboard("/admin/jobs");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-
-            // Cấu hình recurring jobs
-            using (var scope = app.Services.CreateScope())
-            {
-                var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-                RecurringJobsExtension.ConfigureRecurringJobs(recurringJobManager);
-            }
-
             app.Run();
         }
+
     }
 }

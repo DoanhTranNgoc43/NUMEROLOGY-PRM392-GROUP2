@@ -7,6 +7,6 @@ namespace Numerology.Core.Interfaces;
 
 public interface IUserService
 {
-    Task<UserDTO?> FindOrCreateUserAsync(ExternalAuthDTO externalAuth, List<string> roles);
+    Task<Models.DTOs.Auth.UserDTO?> FindOrCreateUserAsync(ExternalAuthDTO externalAuth, List<string> roles);
     Task<TokenDTO> CreateAuthTokenAsync(string userName, int expDays = -1);
 }

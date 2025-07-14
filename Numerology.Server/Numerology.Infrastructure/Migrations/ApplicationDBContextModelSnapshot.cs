@@ -18,287 +18,372 @@ namespace Numerology.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+            {
+                b.Property<string>("Id")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("longtext");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                b.Property<string>("Name")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("longtext");
+                b.Property<string>("NormalizedName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                b.HasIndex("NormalizedName")
+                    .IsUnique()
+                    .HasDatabaseName("RoleNameIndex")
+                    .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "8cf89f78-6561-4a8e-b121-5c5e87c3913b",
-                            Name = "SubAgent",
-                            NormalizedName = "SUBAGENT"
-                        },
-                        new
-                        {
-                            Id = "a84968cc-bda4-4633-a0ca-46e4ace734da",
-                            Name = "GeneralAgent",
-                            NormalizedName = "GENERALAGENT"
-                        });
-                });
+                b.ToTable("tblRoles", (string)null);
+
+                b.HasData(
+                    new
+                    {
+                        Id = "6ea01836-f27e-4da5-b2d4-3ca91a599942",
+                        Name = "SubAgent",
+                        NormalizedName = "SUBAGENT"
+                    },
+                    new
+                    {
+                        Id = "753996c1-f76c-44b5-8b23-fd83a024eae6",
+                        Name = "GeneralAgent",
+                        NormalizedName = "GENERALAGENT"
+                    });
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<string>("ClaimType")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("RoleId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(450)");
+
+                b.HasKey("Id");
+
+                b.HasIndex("RoleId");
+
+                b.ToTable("tblRoleClaims", (string)null);
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                b.Property<string>("ClaimType")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(450)");
+
+                b.HasKey("Id");
+
+                b.HasIndex("UserId");
+
+                b.ToTable("tblUserClaims", (string)null);
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            {
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<string>("ProviderKey")
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<string>("ProviderDisplayName")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(450)");
+
+                b.HasKey("LoginProvider", "ProviderKey");
+
+                b.HasIndex("UserId");
+
+                b.ToTable("tblUserLogins", (string)null);
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            {
+                b.Property<string>("UserId")
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<string>("RoleId")
+                    .HasColumnType("nvarchar(450)");
+
+                b.HasKey("UserId", "RoleId");
+
+                b.HasIndex("RoleId");
+
+                b.ToTable("tblUserRoles", (string)null);
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            {
+                b.Property<string>("UserId")
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<string>("Name")
+                    .HasColumnType("nvarchar(450)");
+
+                b.Property<string>("Value")
+                    .HasColumnType("nvarchar(max)");
+
+                b.HasKey("UserId", "LoginProvider", "Name");
+
+                b.ToTable("tblUserTokens", (string)null);
+            });
 
             modelBuilder.Entity("Numerology.Core.Models.Entities.Bets", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(65,30)");
+                b.Property<decimal>("Amount")
+                    .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTimeOffset>("Created")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTimeOffset>("LastModified")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("char(36)");
+                b.Property<Guid?>("LastModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("NameUser")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<int>("Number")
+                    .HasColumnType("int");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
+                b.Property<string>("Region")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.Property<string>("RiskLevel")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("tblBets", (string)null);
-                });
+                b.Property<int>("TicketCount")
+                    .HasColumnType("int");
 
-            modelBuilder.Entity("Numerology.Core.Models.Entities.LotteryResult", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetime(6)");
+                b.HasKey("Id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
+                b.HasIndex("UserId");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Prize1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize2_1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize2_2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize3_1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize3_2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize3_3")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize3_4")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize3_5")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize3_6")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize4_1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize4_2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize4_3")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize4_4")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize5_1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize5_2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize5_3")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize5_4")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize5_5")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize5_6")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize6_1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize6_2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize6_3")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize7_1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize7_2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize7_3")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Prize7_4")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Special")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Created")
-                        .IsUnique();
-
-                    b.ToTable("tblLotteryResult", (string)null);
-                });
+                b.ToTable("tblBets", (string)null);
+            });
 
             modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+            {
+                b.Property<string>("Id")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                b.Property<int>("AccessFailedCount")
+                    .HasColumnType("int");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTimeOffset>("Created")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                b.Property<string>("Email")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
+                b.Property<bool>("EmailConfirmed")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("longtext");
+                b.Property<string>("FullName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTimeOffset>("LastModified")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("char(36)");
+                b.Property<Guid?>("LastModifiedBy")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
+                b.Property<bool>("LockoutEnabled")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTimeOffset?>("LockoutEnd")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                b.Property<string>("NormalizedEmail")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                b.Property<string>("NormalizedUserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
+                b.Property<string>("PasswordHash")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
+                b.Property<string>("PhoneNumber")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
+                b.Property<bool>("PhoneNumberConfirmed")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                b.Property<string>("RefreshToken")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("RefreshTokenExpiryTime")
+                    .HasColumnType("datetime2");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("varchar(255)");
+                b.Property<string>("RoleId")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext");
+                b.Property<string>("SecurityStamp")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
+                b.Property<bool>("TwoFactorEnabled")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                b.Property<string>("UserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                b.HasIndex("NormalizedEmail")
+                    .HasDatabaseName("EmailIndex");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                b.HasIndex("NormalizedUserName")
+                    .IsUnique()
+                    .HasDatabaseName("UserNameIndex")
+                    .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("tblUsers", (string)null);
-                });
+                b.ToTable("tblUsers", (string)null);
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            {
+                b.HasOne("Numerology.Core.Models.Entities.User", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            {
+                b.HasOne("Numerology.Core.Models.Entities.User", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("Numerology.Core.Models.Entities.User", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            {
+                b.HasOne("Numerology.Core.Models.Entities.User", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity("Numerology.Core.Models.Entities.Bets", b =>
+            {
+                b.HasOne("Numerology.Core.Models.Entities.User", "User")
+                    .WithMany("Bets")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.SetNull);
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Role");
-                });
+                b.Navigation("Role");
+            });
+
+            modelBuilder.Entity("Numerology.Core.Models.Entities.User", b =>
+            {
+                b.Navigation("Bets");
+            });
 #pragma warning restore 612, 618
         }
     }

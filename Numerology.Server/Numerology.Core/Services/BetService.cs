@@ -38,7 +38,11 @@ public class BetService(IBetRepository betRepository) : IBetService
         if (additionalCapital == 0 && !isAllBetsWithAmount)
         {
             decimal numberCoverage = countNumber / Bets.TOTAL_NUMBERS * Bets.PERCENT_MULTIPLIER;
+
+            //var maxPayout = maxBetAmount.Value.Amount * Bets.BETS_WIN;
+
             var maxPayout = maxBetAmount.Value.Amount * Bets.BETS_WIN * 0.01m;
+
             result = CreateBetResult(totalAmount, additionalCapital, availableCapital,
                 maxBetAmount.Value.Amount, maxBetAmount.Value.Number, maxPayout,
                 totalAmount - maxPayout, countNumber, numberCoverage);
@@ -68,7 +72,11 @@ public class BetService(IBetRepository betRepository) : IBetService
         }
         return result;
     }
+
+
+
     private static BetsProfitDTO CreateBetResult(decimal totalRevenue, decimal additionalCapital,
+
         decimal availableCapital, decimal maxBetAmount, int? maxBetNumber, decimal maxPayout,
         decimal expectedProfit, int numberCount, decimal coveragePercent,
         string? riskLevel = null, string? reason = null, bool? shouldAccept = null)
@@ -89,7 +97,10 @@ public class BetService(IBetRepository betRepository) : IBetService
             ShouldAccept = shouldAccept ?? true
         };
     }
-    private static void DetermineRiskLevel(BetsProfitDTO result)
+
+    private void DetermineRiskLevel(BetsProfitDTO result)
+
+
     {
         if (result.MaxPayout > result.AvailableCapital)
         {
@@ -108,7 +119,11 @@ public class BetService(IBetRepository betRepository) : IBetService
         SetRisk(result, risk, reason, accept);
     }
 
+
+ 
+
     private static void SetRisk(BetsProfitDTO result, string riskLevel, string reason, bool shouldAccept)
+
     {
         result.RiskLevel = riskLevel;
         result.Reason = reason;

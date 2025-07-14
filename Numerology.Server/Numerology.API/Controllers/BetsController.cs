@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Numerology.Core.Constants;
 using Numerology.Core.Interfaces;
 using Numerology.Core.Models;
