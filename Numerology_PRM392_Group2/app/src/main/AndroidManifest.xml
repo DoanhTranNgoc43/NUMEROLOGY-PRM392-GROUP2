@@ -27,6 +27,9 @@
             android:name=".controller.DailySummaryActivity"
             android:exported="false" />
         <activity
+            android:name=".controller.DailySummaryActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.BetHistoryActivity"
             android:exported="false" />
         <activity
