@@ -2,6 +2,7 @@ package com.example.numerology_prm392_group2.models;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Ignore;
 
 @Entity(tableName = "users")
 public class User {
@@ -12,10 +13,10 @@ public class User {
     public String email;
     public String password;
 
-    // constructor, getter, setter
     public User() {
-
     }
+
+    @Ignore
     public User(String fullName, String email, String password) {
         this.fullName = fullName;
         this.email = email;

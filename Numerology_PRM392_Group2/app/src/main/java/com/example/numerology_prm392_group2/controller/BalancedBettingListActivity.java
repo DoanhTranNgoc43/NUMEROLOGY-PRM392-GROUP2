@@ -51,7 +51,6 @@ public class BalancedBettingListActivity extends AppCompatActivity {
         forwardListRecyclerView.setAdapter(forwardAdapter);
 
         exportListsButton.setOnClickListener(v -> {
-            // TODO: Implement export functionality (e.g., save to CSV or share)
         });
     }
 }
