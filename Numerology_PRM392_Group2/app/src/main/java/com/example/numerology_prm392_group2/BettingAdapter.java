@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.numerology_prm392_group2.models.BettingInfo;
+
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;

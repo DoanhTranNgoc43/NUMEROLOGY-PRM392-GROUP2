@@ -15,17 +15,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numerology_prm392_group2.R;
-import com.example.numerology_prm392_group2.models.RegisterRequest;
-import com.example.numerology_prm392_group2.models.RegisterResponse;
-import com.example.numerology_prm392_group2.utils.ApiService;
+import com.example.numerology_prm392_group2.models.User;
+import com.example.numerology_prm392_group2.service.AppDatabaseService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class registerActivity extends AppCompatActivity {
 
@@ -42,8 +37,6 @@ public class registerActivity extends AppCompatActivity {
     private TextInputLayout emailLayout;
     private TextInputLayout passwordLayout;
     private TextInputLayout confirmPasswordLayout;
-
-    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +65,6 @@ public class registerActivity extends AppCompatActivity {
         emailLayout = (TextInputLayout) emailEditText.getParent().getParent();
         passwordLayout = (TextInputLayout) passwordEditText.getParent().getParent();
         confirmPasswordLayout = (TextInputLayout) confirmPasswordEditText.getParent().getParent();
-        apiService = ApiService.getInstance(this);
 
         Log.d(TAG, "Views initialized successfully");
     }
@@ -105,33 +97,43 @@ public class registerActivity extends AppCompatActivity {
         }
         setLoadingState(true);
 
-        RegisterRequest registerRequest = new RegisterRequest(fullName, email, password);
-        Log.d(TAG, "Created RegisterRequest with username: " + fullName);
-
-        // Call API
-        Call<RegisterResponse> call = apiService.getApiInterface().register(registerRequest);
-        call.enqueue(new Callback<RegisterResponse>() {
-            @Override
-            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                Log.d(TAG, "API Response received - Code: " + response.code());
-                setLoadingState(false);
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d(TAG, "Registration successful");
-                    handleRegisterSuccess(response.body());
+        // Lưu vào ROOM DB sau khi kiểm tra trùng email
+        new Thread(() -> {
+            AppDatabaseService db = AppDatabaseService.getInstance(getApplicationContext());
+            User existUser = db.userDao().getUserByEmail(email);
+            runOnUiThread(() -> {
+                if (existUser != null) {
+                    setLoadingState(false);
+                    setError(emailLayout, "Email đã được sử dụng");
+                    emailEditText.requestFocus();
                 } else {
-                    Log.e(TAG, "Registration failed - Code: " + response.code() + ", Message: " + response.message());
-                    handleRegisterError(response.code(), response.message());
+                    saveUserToLocalDatabase(fullName, email, password);
                 }
-            }
-
-            @Override
-            public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                Log.e(TAG, "Network error during registration", t);
-                setLoadingState(false);
-                handleNetworkError(t);
-            }
-        });
+            });
+        }).start();
     }
+
+    private void saveUserToLocalDatabase(String fullName, String email, String password) {
+        User user = new User(fullName, email, password);
+        new Thread(() -> {
+            AppDatabaseService db = AppDatabaseService.getInstance(getApplicationContext());
+            db.userDao().insert(user);
+            Log.d(TAG, "User inserted to Room database: " + email);
+            runOnUiThread(() -> {
+                setLoadingState(false);
+                String successMessage = "Đăng ký thành công! Bạn có thể đăng nhập ngay.";
+                showSuccessDialog("Thành công", successMessage, () -> {
+                    Intent intent = new Intent(registerActivity.this, Login.class);
+                    if (!email.isEmpty()) {
+                        intent.putExtra("email", email);
+                    }
+                    startActivity(intent);
+                    finish();
+                });
+            });
+        }).start();
+    }
+
 
     private boolean validateInput(String fullName, String email, String password, String confirmPassword) {
         boolean isValid = true;
@@ -200,90 +202,6 @@ public class registerActivity extends AppCompatActivity {
         layout.setError(message);
     }
 
-    private void handleRegisterSuccess(RegisterResponse response) {
-        Log.d(TAG, "Handling registration success - Status: " + response.getStatus() + ", Message: " + response.getMessage());
-
-        if (response.isSuccess()) {
-            String successMessage = response.getMessage();
-            if (successMessage == null || successMessage.trim().isEmpty()) {
-                successMessage = "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.";
-            }
-
-            showSuccessDialog("Thành công", successMessage, () -> {
-                Intent intent = new Intent(registerActivity.this, Login.class);
-                String email = emailEditText.getText().toString().trim();
-                if (!email.isEmpty()) {
-                    intent.putExtra("email", email);
-                }
-                startActivity(intent);
-                finish();
-            });
-        } else {
-            String errorMessage = response.getMessage();
-            if (errorMessage == null || errorMessage.trim().isEmpty()) {
-                errorMessage = "Đăng ký thất bại. Vui lòng thử lại.";
-            }
-            showErrorDialog("Lỗi", errorMessage);
-        }
-    }
-
-    private void handleRegisterError(int statusCode, String message) {
-        String errorMessage = "Đăng ký thất bại";
-
-        switch (statusCode) {
-            case 400:
-                errorMessage = "Thông tin đăng ký không hợp lệ. Vui lòng kiểm tra lại.";
-                break;
-            case 409:
-                errorMessage = "Email hoặc tên người dùng đã được sử dụng. Vui lòng chọn thông tin khác.";
-                break;
-            case 422:
-                errorMessage = "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại thông tin.";
-                break;
-            case 500:
-                errorMessage = "Lỗi server. Vui lòng thử lại sau.";
-                break;
-            default:
-                if (message != null && !message.trim().isEmpty()) {
-                    errorMessage = message;
-                }
-                break;
-        }
-
-        showErrorDialog("Lỗi", errorMessage);
-        Log.e(TAG, "Register error: " + statusCode + " - " + message);
-    }
-
-    private void handleNetworkError(Throwable t) {
-        String errorMessage = "Lỗi kết nối mạng. Vui lòng kiểm tra kết nối internet.";
-
-        if (t != null && t.getMessage() != null) {
-            String message = t.getMessage().toLowerCase();
-            if (message.contains("timeout")) {
-                errorMessage = "Kết nối bị timeout. Vui lòng thử lại.";
-            } else if (message.contains("unable to resolve host")) {
-                errorMessage = "Không thể kết nối đến server. Vui lòng kiểm tra kết nối internet.";
-            } else if (message.contains("connection refused")) {
-                errorMessage = "Server không phản hồi. Vui lòng thử lại sau.";
-            }
-        }
-
-        showErrorDialog("Lỗi Kết Nối", errorMessage);
-    }
-
-    private void showErrorDialog(String title, String message) {
-        if (isFinishing() || isDestroyed()) {
-            return;
-        }
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                .setCancelable(true)
-                .show();
-    }
-
     private void showSuccessDialog(String title, String message, Runnable onDismissAction) {
         if (isFinishing() || isDestroyed()) {
             return;
@@ -310,15 +228,13 @@ public class registerActivity extends AppCompatActivity {
                     onDismissAction.run();
                 }
             }
-        }, 3000);
+        }, 2000);
     }
 
     private void setLoadingState(boolean isLoading) {
         runOnUiThread(() -> {
             signUpButton.setEnabled(!isLoading);
             signUpButton.setText(isLoading ? "Đang đăng ký..." : "Đăng Ký");
-
-            // Disable input fields during loading
             fullNameEditText.setEnabled(!isLoading);
             emailEditText.setEnabled(!isLoading);
             passwordEditText.setEnabled(!isLoading);
