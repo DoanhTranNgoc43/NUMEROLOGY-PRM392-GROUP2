@@ -101,32 +101,32 @@ public class HomeSubAgentActivity extends AppCompatActivity {
         });
 
         btnPersonalInfo.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, PersonalInfoActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, PersonalInfoActivity.class);
+            startActivity(intent);
         });
 
         btnBetHistory.setOnClickListener(v -> {
 
-             Intent intent = new Intent(HomeSubAgentActivity.this, BetHistoryActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, BetHistoryActivity.class);
+            startActivity(intent);
         });
 
         btnDailySummary.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, DailySummaryActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, DailySummaryActivity.class);
+            startActivity(intent);
         });
 
         btnContactAgent.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, ContactAgentActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, ContactAgentActivity.class);
+            startActivity(intent);
         });
         btnNotification.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, NotificationActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, NotificationActivity.class);
+            startActivity(intent);
         });
         btnRevenue.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, RevenueActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, RevenueActivity.class);
+            startActivity(intent);
         });
 
     }
@@ -136,8 +136,8 @@ public class HomeSubAgentActivity extends AppCompatActivity {
                 .setTitle("Tùy chọn")
                 .setItems(new String[]{"Cài đặt", "Đăng xuất"}, (dialog, which) -> {
                     if (which == 0) {
-                         Intent intent = new Intent(HomeSubAgentActivity.this, SettingsActivity.class);
-                         startActivity(intent);
+                        Intent intent = new Intent(HomeSubAgentActivity.this, SettingsActivity.class);
+                        startActivity(intent);
                     }if(which == 1) {
                         showLogoutConfirmation();
                     }

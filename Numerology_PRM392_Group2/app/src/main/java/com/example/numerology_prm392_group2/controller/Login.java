@@ -125,6 +125,7 @@ public class Login extends AppCompatActivity {
                     showAlertDialog("Lỗi", "Mật khẩu không đúng.");
                 }
                 else {
+                    saveLoginStatus(user.fullName, user.email);
                     saveCredentials(email, password, rememberMeCheckbox.isChecked());
                     showAutoDismissDialog(
                             "Xin chào, " + user.fullName,
@@ -134,6 +135,25 @@ public class Login extends AppCompatActivity {
             });
         }).start();
     }
+
+    private void saveLoginStatus(String fullName, String email) {
+        SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("is_logged_in", true);
+        editor.putString("user_name", fullName);
+        editor.putString("user_email", email);
+        editor.apply();
+    }
+
+    public static void clearLoginStatus(AppCompatActivity activity) {
+        SharedPreferences prefs = activity.getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("is_logged_in", false);
+        editor.remove("user_name");
+        editor.remove("user_email");
+        editor.apply();
+    }
+
 
     private boolean validateInput(String email, String password) {
         boolean isValid = true;

@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.example.numerology_prm392_group2.dao.UserDAO;
 import com.example.numerology_prm392_group2.models.User;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class AppDatabaseService extends RoomDatabase {
     private static volatile AppDatabaseService INSTANCE;
 
