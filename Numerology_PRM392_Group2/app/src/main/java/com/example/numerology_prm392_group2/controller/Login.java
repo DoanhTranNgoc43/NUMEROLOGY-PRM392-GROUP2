@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.CheckBox;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -61,7 +62,6 @@ public class Login extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
-
         apiService = ApiService.getInstance(this);
     }
 
@@ -113,18 +113,16 @@ public class Login extends AppCompatActivity {
 
         // Call API
         Call<LoginResponse> call = apiService.getApiInterface().login(loginRequest);
-        call.enqueue(new Callback<LoginResponse>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                 setLoadingState(false);
-
                 if (response.isSuccessful() && response.body() != null) {
                     handleLoginSuccess(response.body(), email, password);
                 } else {
                     handleLoginError(response.code(), response.message());
                 }
             }
-
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 setLoadingState(false);
@@ -165,7 +163,6 @@ public class Login extends AppCompatActivity {
             String token = response.getToken();
             String userId = "";
             String userName = "";
-
             if (response.getData() != null && response.getData().getUser() != null) {
                 userId = response.getData().getUser().getId();
                 userName = response.getData().getUser().getName();

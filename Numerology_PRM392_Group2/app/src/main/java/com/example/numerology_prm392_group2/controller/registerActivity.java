@@ -115,7 +115,6 @@ public class registerActivity extends AppCompatActivity {
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 Log.d(TAG, "API Response received - Code: " + response.code());
                 setLoadingState(false);
-
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d(TAG, "Registration successful");
                     handleRegisterSuccess(response.body());

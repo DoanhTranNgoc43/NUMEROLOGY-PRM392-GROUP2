@@ -21,11 +21,8 @@ public class AuthController(IAuthService authService, IIdentityService identityS
         try
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-
             var result = await _authService.SigninUserAsync(loginDTO);
             if (!result) throw new Exception("Email or password is incorrect");
-
-            // Get token data and user information
             var tokenData = await _authService.CreateAuthTokenAsync(loginDTO.Username);
             var user = await _authService.GetUserByUsernameAsync(loginDTO.Username);
 

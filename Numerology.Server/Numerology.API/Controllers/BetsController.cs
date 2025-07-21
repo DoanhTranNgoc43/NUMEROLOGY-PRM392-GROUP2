@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Numerology.Core.Constants;
 using Numerology.Core.Interfaces;
 using Numerology.Core.Models;
@@ -13,6 +14,7 @@ public class BetsController(IBetService betService) : ControllerBase
 {
     private readonly IBetService _betService = betService;
     [HttpGet("expected-profit")]
+    [Authorize]
     public async Task<ActionResult<BetsDTO>> GetExpectedProfit([FromQuery]decimal additionalCapital = 0)
     {
         try
