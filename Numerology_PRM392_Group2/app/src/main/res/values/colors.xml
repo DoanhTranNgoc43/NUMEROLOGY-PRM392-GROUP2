@@ -43,5 +43,9 @@
     <color name="success_color">#4CAF50</color>
     <color name="error_color">#F44336</color>
     <color name="warning_color">#FF9800</color>
+    <!-- New colors for recommendations -->
+    <color name="keep_color">#4CAF50</color>
+    <color name="forward_color">#FF5722</color>
+    <color name="neutral_color">#757575</color>
 
 </resources>

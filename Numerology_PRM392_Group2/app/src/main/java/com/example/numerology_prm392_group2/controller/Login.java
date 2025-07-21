@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.CheckBox;
 
 import androidx.activity.EdgeToEdge;
@@ -14,11 +15,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numerology_prm392_group2.R;
-import com.example.numerology_prm392_group2.models.User;
-import com.example.numerology_prm392_group2.service.AppDatabaseService;
+
+import com.example.numerology_prm392_group2.models.LoginRequest;
+import com.example.numerology_prm392_group2.models.LoginResponse;
+import com.example.numerology_prm392_group2.utils.ApiService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
 
@@ -28,6 +35,8 @@ public class Login extends AppCompatActivity {
     private TextInputEditText passwordEditText;
     private MaterialButton loginButton;
     private CheckBox rememberMeCheckbox;
+
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class Login extends AppCompatActivity {
         initializeViews();
         setupClickListeners();
         loadSavedCredentials();
+        checkUserLoginStatus();
     }
 
     private void initializeViews() {
@@ -51,6 +61,8 @@ public class Login extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
+
+        apiService = ApiService.getInstance(this);
     }
 
     private void setupClickListeners() {
@@ -65,74 +77,61 @@ public class Login extends AppCompatActivity {
         findViewById(R.id.googleIcon).setOnClickListener(v -> {
             showAlertDialog("Thông báo", "Đăng nhập bằng Google đang được phát triển");
         });
+
         findViewById(R.id.facebookIcon).setOnClickListener(v -> {
             showAlertDialog("Thông báo", "Đăng nhập bằng Facebook đang được phát triển");
         });
+
         findViewById(R.id.instagramIcon).setOnClickListener(v -> {
             showAlertDialog("Thông báo", "Đăng nhập bằng Instagram đang được phát triển");
         });
     }
 
-    private void loadSavedCredentials() {
-        SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        String savedEmail = prefs.getString("email", "");
-        String savedPassword = prefs.getString("password", "");
-        boolean remember = prefs.getBoolean("remember_me", false);
-
-        if (remember) {
-            emailEditText.setText(savedEmail);
-            passwordEditText.setText(savedPassword);
-            rememberMeCheckbox.setChecked(true);
+    private void checkUserLoginStatus() {
+        if (apiService.isLoggedIn()) {
+            navigateToMainActivity();
         }
     }
 
-    private void saveCredentials(String email, String password, boolean rememberMe) {
-        SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        if (rememberMe) {
-            editor.putString("email", email);
-            editor.putString("password", password);
-            editor.putBoolean("remember_me", true);
-        } else {
-            editor.remove("email");
-            editor.remove("password");
-            editor.putBoolean("remember_me", false);
+    private void loadSavedCredentials() {
+        if (apiService.isRememberMeEnabled()) {
+            String[] credentials = apiService.getSavedCredentials();
+            emailEditText.setText(credentials[0]);
+            passwordEditText.setText(credentials[1]);
+            rememberMeCheckbox.setChecked(true);
         }
-        editor.apply();
     }
 
     private void performLogin() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-
         if (!validateInput(email, password)) {
             return;
         }
-
         setLoadingState(true);
+        LoginRequest loginRequest = new LoginRequest(email, password);
 
-        new Thread(() -> {
-            AppDatabaseService db = AppDatabaseService.getInstance(getApplicationContext());
-            User user = db.userDao().getUserByEmail(email);
-            runOnUiThread(() -> {
+        // Call API
+        Call<LoginResponse> call = apiService.getApiInterface().login(loginRequest);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 setLoadingState(false);
-                if(user == null) {
-                    emailEditText.setError("Tài khoản không tồn tại");
-                    showAlertDialog("Lỗi", "Email chưa được đăng ký.");
+
+                if (response.isSuccessful() && response.body() != null) {
+                    handleLoginSuccess(response.body(), email, password);
+                } else {
+                    handleLoginError(response.code(), response.message());
                 }
-                else if(!user.password.equals(password)) {
-                    passwordEditText.setError("Sai mật khẩu");
-                    showAlertDialog("Lỗi", "Mật khẩu không đúng.");
-                }
-                else {
-                    saveCredentials(email, password, rememberMeCheckbox.isChecked());
-                    showAutoDismissDialog(
-                            "Xin chào, " + user.fullName,
-                            this::navigateToMainActivity
-                    );
-                }
-            });
-        }).start();
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                setLoadingState(false);
+                handleNetworkError(t);
+                Log.e(TAG, "Login failed", t);
+            }
+        });
     }
 
     private boolean validateInput(String email, String password) {
@@ -157,8 +156,83 @@ public class Login extends AppCompatActivity {
         } else {
             passwordEditText.setError(null);
         }
-
         return isValid;
+    }
+
+    private void handleLoginSuccess(LoginResponse response, String email, String password) {
+        if (response.isSuccess()) {
+            String token = response.getToken();
+            String userId = "";
+            String userName = "";
+
+            if (response.getData() != null && response.getData().getUser() != null) {
+                userId = response.getData().getUser().getId();
+                userName = response.getData().getUser().getName();
+                Log.d(TAG, "Saving username: " + userName);
+            } else {
+                Log.e(TAG, "User data is null in LoginResponse");
+            }
+            SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("token", token);
+            editor.putString("user_id", userId);
+            editor.putString("user_name", userName);
+            editor.apply();
+            apiService.saveLoginData(token, userId, userName);
+            apiService.saveCredentials(email, password, rememberMeCheckbox.isChecked());
+
+            showAutoDismissDialog("Thành công", "Đăng nhập thành công!", this::navigateToMainActivity);
+        } else {
+            String errorMessage = response.getMessage();
+            if (errorMessage == null || errorMessage.isEmpty()) {
+                errorMessage = "Đăng nhập thất bại";
+            }
+            showAlertDialog("Lỗi", errorMessage);
+        }
+    }
+
+    private void handleLoginError(int statusCode, String message) {
+        String errorMessage = "Đăng nhập thất bại";
+
+        switch (statusCode) {
+            case 401:
+                errorMessage = "Thông tin đăng nhập không hợp lệ";
+                break;
+            case 400:
+                errorMessage = "Tài khoản hoặc mật khẩu không đúng";
+                break;
+            case 403:
+                errorMessage = "Tài khoản đã bị khóa";
+                break;
+            case 404:
+                errorMessage = "Tài khoản không tồn tại";
+                break;
+            case 500:
+                errorMessage = "Lỗi server, vui lòng thử lại sau";
+                break;
+            default:
+                if (message != null && !message.isEmpty()) {
+                    errorMessage = message;
+                }
+                break;
+        }
+
+        showAlertDialog("Lỗi", errorMessage);
+        Log.e(TAG, "Login error: " + statusCode + " - " + message);
+    }
+
+    private void handleNetworkError(Throwable t) {
+        String errorMessage = "Lỗi kết nối mạng";
+
+        if (t.getMessage() != null) {
+            if (t.getMessage().contains("timeout")) {
+                errorMessage = "Kết nối bị timeout, vui lòng thử lại";
+            } else if (t.getMessage().contains("Unable to resolve host")) {
+                errorMessage = "Không thể kết nối đến server";
+            }
+        }
+
+        showAlertDialog("Lỗi", errorMessage);
     }
 
     private void showAlertDialog(String title, String message) {
@@ -169,9 +243,9 @@ public class Login extends AppCompatActivity {
                 .show();
     }
 
-    private void showAutoDismissDialog(String message, Runnable onDismissAction) {
+    private void showAutoDismissDialog(String title, String message, Runnable onDismissAction) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                .setTitle("Đăng nhập thành công")
+                .setTitle(title)
                 .setMessage(message);
 
         final androidx.appcompat.app.AlertDialog dialog = builder.create();
@@ -183,7 +257,7 @@ public class Login extends AppCompatActivity {
                     onDismissAction.run();
                 }
             }
-        }, 1500);
+        }, 2000);
     }
 
     private void setLoadingState(boolean isLoading) {
@@ -195,9 +269,16 @@ public class Login extends AppCompatActivity {
     }
 
     private void navigateToMainActivity() {
+        Log.d(TAG, "Attempting to navigate to HomesubAgentActivity");
         Intent intent = new Intent(getApplicationContext(), HomeSubAgentActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        Log.d(TAG, "Navigation intent started");
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
