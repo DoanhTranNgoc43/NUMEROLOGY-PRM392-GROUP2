@@ -1,6 +1,7 @@
 package com.example.numerology_prm392_group2.controller;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
@@ -16,7 +17,6 @@ import androidx.core.view.WindowInsetsCompat;
 import android.widget.ImageView;
 
 import com.example.numerology_prm392_group2.R;
-import com.example.numerology_prm392_group2.utils.ApiService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class HomeSubAgentActivity extends AppCompatActivity {
@@ -35,9 +35,7 @@ public class HomeSubAgentActivity extends AppCompatActivity {
 
     private ImageView imageViewAvatar;
 
-    private String userName;
     private String userId;
-    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,6 @@ public class HomeSubAgentActivity extends AppCompatActivity {
         btnNotification = findViewById(R.id.btnNotification);
 
         btnRevenue = findViewById(R.id.btnRevenue);
-        apiService = ApiService.getInstance(this);
         TextView textViewMarquee = findViewById(R.id.textViewMarquee);
         textViewMarquee.setSelected(true);
 
@@ -77,14 +74,12 @@ public class HomeSubAgentActivity extends AppCompatActivity {
     }
 
     private void loadUserData() {
-        // Load user data from ApiService
-        userName = apiService.getUserName();
-        userId = apiService.getUserId();
+        SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "");
+        userId = prefs.getString("user_email", "");
+        Log.d(TAG, "Loading user data - Name: " + userName + ", Email: " + userId);
 
-        Log.d(TAG, "Loading user data - Name: " + userName + ", ID: " + userId);
-
-        // Update greeting text
-        if (userName != null && !userName.isEmpty()) {
+        if (!userName.isEmpty()) {
             textViewGreeting.setText("Xin chào, " + userName);
         } else {
             textViewGreeting.setText("Xin chào, SubAgent");
@@ -103,37 +98,35 @@ public class HomeSubAgentActivity extends AppCompatActivity {
 
         btnCustomerList.setOnClickListener(v -> {
             showFeatureDialog("Danh sách khách hàng", "Chức năng danh sách khách hàng đang được phát triển");
-            // Intent intent = new Intent(HomeSubAgentActivity.this, CustomerListActivity.class);
-            // startActivity(intent);
         });
 
         btnPersonalInfo.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, PersonalInfoActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, PersonalInfoActivity.class);
+            startActivity(intent);
         });
 
         btnBetHistory.setOnClickListener(v -> {
 
-             Intent intent = new Intent(HomeSubAgentActivity.this, BetHistoryActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, BetHistoryActivity.class);
+            startActivity(intent);
         });
 
         btnDailySummary.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, DailySummaryActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, DailySummaryActivity.class);
+            startActivity(intent);
         });
 
         btnContactAgent.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, ContactAgentActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, ContactAgentActivity.class);
+            startActivity(intent);
         });
         btnNotification.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, NotificationActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, NotificationActivity.class);
+            startActivity(intent);
         });
         btnRevenue.setOnClickListener(v -> {
-             Intent intent = new Intent(HomeSubAgentActivity.this, RevenueActivity.class);
-             startActivity(intent);
+            Intent intent = new Intent(HomeSubAgentActivity.this, RevenueActivity.class);
+            startActivity(intent);
         });
 
     }
@@ -143,8 +136,8 @@ public class HomeSubAgentActivity extends AppCompatActivity {
                 .setTitle("Tùy chọn")
                 .setItems(new String[]{"Cài đặt", "Đăng xuất"}, (dialog, which) -> {
                     if (which == 0) {
-                         Intent intent = new Intent(HomeSubAgentActivity.this, SettingsActivity.class);
-                         startActivity(intent);
+                        Intent intent = new Intent(HomeSubAgentActivity.this, SettingsActivity.class);
+                        startActivity(intent);
                     }if(which == 1) {
                         showLogoutConfirmation();
                     }
@@ -170,10 +163,9 @@ public class HomeSubAgentActivity extends AppCompatActivity {
                 .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
                 .show();
     }
-
     private void performLogout() {
         try {
-            apiService.clearLoginData();
+            Login.clearLoginStatus(this);
             Intent intent = new Intent(HomeSubAgentActivity.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -183,11 +175,13 @@ public class HomeSubAgentActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (apiService != null && !apiService.isLoggedIn()) {
+        SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        boolean isLoggedIn = prefs.getBoolean("is_logged_in", false);
+        if (!isLoggedIn) {
             Log.d(TAG, "User not logged in, redirecting to login");
             Intent intent = new Intent(HomeSubAgentActivity.this, Login.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -195,6 +189,7 @@ public class HomeSubAgentActivity extends AppCompatActivity {
             finish();
         }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -204,7 +199,7 @@ public class HomeSubAgentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Override back button to show logout confirmation
+        super.onBackPressed();
         showLogoutConfirmation();
     }
 }
