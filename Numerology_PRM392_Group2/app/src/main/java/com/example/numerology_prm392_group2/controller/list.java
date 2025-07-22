@@ -215,7 +215,7 @@ public class list extends AppCompatActivity {
                 .show();
 //        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 //        lotteryService.getResultByDate(today, new LotteryService.LotteryResultCallback(){
-       lotteryService.getResultByDate("2025-07-13", new LotteryService.LotteryResultCallback(){
+        lotteryService.getResultByDate("2025-07-21", new LotteryService.LotteryResultCallback(){
             @Override
             public void onSuccess(LotteryResult result) {
                 runOnUiThread(() -> {
@@ -315,7 +315,7 @@ public class list extends AppCompatActivity {
         paint.setTextSize(12);
 
         int y = 50;
-        canvas.drawText("Kết Quả Xổ Số - Ngày: 2025-07-11", 50, y, paint);
+        canvas.drawText("Kết Quả Xổ Số - Ngày: 2025-07-22", 50, y, paint);
         y += 20;
         canvas.drawText("Giải Đặc Biệt: " + lastLotteryResult.getSpecialPrize(), 50, y, paint);
         y += 30;

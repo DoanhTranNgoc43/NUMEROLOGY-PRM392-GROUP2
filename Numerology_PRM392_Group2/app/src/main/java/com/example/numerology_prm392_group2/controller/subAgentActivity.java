@@ -20,10 +20,12 @@ import com.example.numerology_prm392_group2.models.GeneralAgent;
 import com.example.numerology_prm392_group2.service.LotteryService;
 import com.example.numerology_prm392_group2.service.PayoutCalculator;
 import com.example.numerology_prm392_group2.utils.ApiService;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
+import java.util.Random;
 
 public class subAgentActivity extends AppCompatActivity {
 
@@ -65,6 +67,7 @@ public class subAgentActivity extends AppCompatActivity {
         showListButton = findViewById(R.id.showListButton);
         checkResultsButton = findViewById(R.id.checkResultsButton);
         showAgentsButton = findViewById(R.id.showAgentsButton);
+        AppCompatButton batchInputButton = findViewById(R.id.batchInputButton);
         BettingManager.getInstance().init(this);
         apiService = ApiService.getInstance(this);
         lotteryService = LotteryService.getInstance();
@@ -87,6 +90,12 @@ public class subAgentActivity extends AppCompatActivity {
         showAgentsButton.setOnClickListener(v -> {
             Log.d(TAG, "Show Agents button clicked");
             showGeneralAgents();
+        });
+
+        AppCompatButton batchInputButton = findViewById(R.id.batchInputButton);
+        batchInputButton.setOnClickListener(v -> {
+            Log.d(TAG, "Batch Input button clicked");
+            showBatchInputDialog();
         });
     }
 
@@ -162,7 +171,6 @@ public class subAgentActivity extends AppCompatActivity {
         }
 
         StringBuilder agentList = new StringBuilder();
-        agentList.append("=== DANH SÁCH ĐẠI LÝ CHÍNH ===\n\n");
 
         for (GeneralAgent agent : agents) {
             agentList.append("👤 ").append(agent.getAgentName()).append("\n");
@@ -170,7 +178,6 @@ public class subAgentActivity extends AppCompatActivity {
             agentList.append("📧 ").append(agent.getEmail()).append("\n");
             agentList.append("📍 ").append(agent.getAddress()).append("\n");
             agentList.append("💰 Hoa hồng: ").append(String.format("%.1f", agent.getCommissionRate() * 100)).append("%\n");
-            agentList.append("👥 Số đại lý phụ: ").append(agent.getSubAgentIds().size()).append("\n");
             agentList.append("🔄 Trạng thái: ").append(agent.isActive() ? "Hoạt động" : "Tạm dừng").append("\n");
             agentList.append("─────────────────────\n");
         }
@@ -291,6 +298,170 @@ public class subAgentActivity extends AppCompatActivity {
         totalBetsText.setText(String.valueOf(bettingList.size()));
         totalAmountText.setText(String.format("%.0f", payoutCalculator.calculateTotalBetAmount(bettingList)));
     }
+    private void showBatchInputDialog() {
+        android.view.LayoutInflater inflater = getLayoutInflater();
+        android.view.View dialogView = inflater.inflate(R.layout.dialog_batch_input, null);
 
+        TextInputEditText batchInput = dialogView.findViewById(R.id.batchInputEditText);
+        MaterialButton sampleDataButton = dialogView.findViewById(R.id.sampleDataButton);
+
+        // Set initial hint with example
+        String exampleText = "Nguyễn Văn A,12,50000\n" +
+                "Trần Thị B,45,75000\n" +
+                "Lê Văn C,78,100000\n" +
+                "Phạm Thị D,23,60000\n" +
+                "Hoàng Văn E,89,80000";
+        batchInput.setHint("Nhập theo định dạng: Tên,Số cược,Tiền cược\nMỗi dòng là một cược\n\nVí dụ:\n" + exampleText);
+
+        // Tạo dialog với cả neutral button
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                .setTitle("Nhập hàng loạt")
+                .setView(dialogView)
+                .setPositiveButton("Thêm tất cả", (dialogInterface, which) -> {
+                    String inputText = batchInput.getText().toString().trim();
+                    if (!inputText.isEmpty()) {
+                        processBatchInput(inputText);
+                    } else {
+                        showFeatureDialog("Lỗi", "Vui lòng nhập dữ liệu trước khi thêm!");
+                    }
+                })
+                .setNegativeButton("Hủy", (dialogInterface, which) -> dialogInterface.dismiss())
+                .setNeutralButton("Tạo dữ liệu mẫu", null); // Set null trước, sẽ override sau
+
+        androidx.appcompat.app.AlertDialog dialog = builder.create();
+
+        // Override neutral button click để không dismiss dialog
+        dialog.setOnShowListener(dialogInterface -> {
+            android.widget.Button neutralButton = dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL);
+            neutralButton.setOnClickListener(v -> {
+                Log.d(TAG, "Neutral button clicked");
+                String sampleData = generateSampleData();
+                batchInput.setText(sampleData);
+                batchInput.setSelection(0); // Scroll to top
+            });
+        });
+
+        // Set listener cho button trong layout (backup option)
+        if (sampleDataButton != null) {
+            sampleDataButton.setOnClickListener(v -> {
+                Log.d(TAG, "Layout button clicked");
+                String sampleData = generateSampleData();
+                batchInput.setText(sampleData);
+                batchInput.setSelection(0); // Scroll to top
+            });
+        }
+
+        dialog.show();
+    }
+
+    private void processBatchInput(String inputText) {
+        String[] lines = inputText.split("\n");
+        int successCount = 0;
+        int errorCount = 0;
+        StringBuilder errorMessages = new StringBuilder();
+
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i].trim();
+            if (line.isEmpty()) continue;
+
+            String[] parts = line.split(",");
+            if (parts.length != 3) {
+                errorCount++;
+                errorMessages.append("Dòng ").append(i + 1).append(": Sai định dạng\n");
+                continue;
+            }
+
+            String name = parts[0].trim();
+            String number = parts[1].trim();
+            String amountStr = parts[2].trim();
+
+            // Validate input
+            if (name.isEmpty()) {
+                errorCount++;
+                errorMessages.append("Dòng ").append(i + 1).append(": Tên trống\n");
+                continue;
+            }
+
+            if (!number.matches("\\d+")) {
+                errorCount++;
+                errorMessages.append("Dòng ").append(i + 1).append(": Số cược không hợp lệ\n");
+                continue;
+            }
+
+            try {
+                int numberInt = Integer.parseInt(number);
+                if (numberInt < 0 || numberInt > 99) {
+                    errorCount++;
+                    errorMessages.append("Dòng ").append(i + 1).append(": Số cược phải từ 0-99\n");
+                    continue;
+                }
+            } catch (NumberFormatException e) {
+                errorCount++;
+                errorMessages.append("Dòng ").append(i + 1).append(": Số cược không hợp lệ\n");
+                continue;
+            }
+
+            try {
+                double amount = Double.parseDouble(amountStr);
+                if (amount <= 1000) {
+                    errorCount++;
+                    errorMessages.append("Dòng ").append(i + 1).append(": Số tiền phải > 1000\n");
+                    continue;
+                }
+
+                // Format number to 2 digits
+                String formattedNumber = String.format("%02d", Integer.parseInt(number));
+
+                // Add to betting list
+                BettingInfo bettingInfo = new BettingInfo(name, formattedNumber, amount);
+                BettingManager.getInstance().addBetting(bettingInfo);
+                successCount++;
+
+            } catch (NumberFormatException e) {
+                errorCount++;
+                errorMessages.append("Dòng ").append(i + 1).append(": Số tiền không hợp lệ\n");
+            }
+        }
+
+        // Show result
+        StringBuilder resultMessage = new StringBuilder();
+        resultMessage.append("Kết quả nhập hàng loạt:\n");
+        resultMessage.append("✅ Thành công: ").append(successCount).append(" cược\n");
+        if (errorCount > 0) {
+            resultMessage.append("❌ Lỗi: ").append(errorCount).append(" cược\n\n");
+            resultMessage.append("Chi tiết lỗi:\n").append(errorMessages.toString());
+        }
+
+        showFeatureDialog("Kết quả nhập hàng loạt", resultMessage.toString());
+
+        if (successCount > 0) {
+            clearInputs();
+            updateStatistics();
+        }
+    }
+
+    private String generateSampleData() {
+        String[] sampleNames = {
+                "Nguyễn Văn A", "Trần Thị B", "Lê Văn C", "Phạm Thị D", "Hoàng Văn E",
+                "Vũ Thị F", "Đỗ Văn G", "Bùi Thị H", "Dương Văn I", "Mai Thị K",
+                "Tạ Văn L", "Lý Thị M", "Đặng Văn N", "Cao Thị O", "Phan Văn P",
+                "Từ Thị Q", "Đinh Văn R", "Võ Thị S", "Lâm Văn T", "Chu Thị U"
+        };
+
+        StringBuilder sampleData = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < Math.min(20, sampleNames.length); i++) {
+            String name = sampleNames[i];
+            int number = random.nextInt(100); // 0-99
+            int amount = (random.nextInt(20) + 1) * 5000; // 5000-100000, multiples of 5000
+
+            sampleData.append(name).append(",").append(String.format("%02d", number))
+                    .append(",").append(amount);
+            if (i < Math.min(19, sampleNames.length - 1)) sampleData.append("\n");
+        }
+
+        return sampleData.toString();
+    }
 
 }

@@ -35,6 +35,24 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Date Range Selection Button -->
+            <Button
+                android:id="@+id/selectDateRangeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chọn khoảng thời gian"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Date Range Display -->
+            <TextView
+                android:id="@+id/dateRangeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Từ ngày 22/07/2024 đến ngày 22/07/2025"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:layout_marginBottom="16dp" />
+
             <!-- Số nóng Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -52,7 +70,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SỐ TRÚNG NHIỀU NHẤT"
+                        android:text="🔥 SỐ NÓNG (TRÚNG NHIỀU NHẤT)"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_color"
@@ -85,7 +103,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SỐ TRÚNG ÍT NHẤT"
+                        android:text="❄️ SỐ LẠNH (TRÚNG ÍT NHẤT)"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_color"
@@ -131,7 +149,37 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Khuyến nghị Card -->
+            <!--            &lt;!&ndash; Khuyến nghị Card &ndash;&gt;-->
+            <!--            <androidx.cardview.widget.CardView-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginBottom="16dp"-->
+            <!--                app:cardCornerRadius="8dp"-->
+            <!--                app:cardElevation="4dp">-->
+
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    android:padding="16dp">-->
+
+            <!--                    <TextView-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="💡 KHUYẾN NGHỊ DỰA TRÊN TẦN SUẤT"-->
+            <!--                        android:textSize="18sp"-->
+            <!--                        android:textStyle="bold"-->
+            <!--                        android:textColor="@color/primary_color"-->
+            <!--                        android:layout_marginBottom="12dp" />-->
+
+            <!--                    <androidx.recyclerview.widget.RecyclerView-->
+            <!--                        android:id="@+id/recommendationRecyclerView"-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content" />-->
+            <!--                </LinearLayout>-->
+            <!--            </androidx.cardview.widget.CardView>-->
+
+            <!-- Biểu đồ tần suất Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,16 +196,16 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="KHUYẾN NGHỊ ÔM SỐ DỰA TRÊN TẦN SUẤT"
+                        android:text="📈 BIỂU ĐỒ TẦN SUẤT SỐ (00-99)"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_color"
                         android:layout_marginBottom="12dp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recommendationRecyclerView"
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/frequencyChart"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="300dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

@@ -46,29 +46,29 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
-    
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
 
     // Gson for JSON serialization
-    implementation (libs.gson)
+    implementation ("com.google.code.gson:gson:2.10.1")
 
     // OkHttp (used by Retrofit)
-    implementation (libs.okhttp)
-    implementation (libs.logging.interceptor)
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // Material Components (if not already included)
-    implementation (libs.material.v1110)
-    implementation (libs.glide)
-    annotationProcessor (libs.compiler)
+    implementation ("com.google.android.material:material:1.11.0")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
-// Nếu dùng Kotlin: kapt "androidx.room:room-compiler:2.6.1"
 
 
 }

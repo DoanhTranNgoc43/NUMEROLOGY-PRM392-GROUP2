@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5"
+    android:background="#F5F7FA"
     tools:context=".controller.subAgentActivity">
 
     <LinearLayout
@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,10 +32,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🎯 Ghi Đề Số"
+                    android:text="Ghi Đề Số"
                     android:textSize="24sp"
                     android:textStyle="bold"
-
+                    android:textColor="#2C3E50"
                     android:gravity="center"
                     android:layout_marginBottom="8dp" />
 
@@ -43,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:text="Nhập thông tin cược của bạn"
                     android:textSize="14sp"
-
+                    android:textColor="#7F8C8D"
                     android:gravity="center" />
 
             </LinearLayout>
@@ -56,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,14 +71,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:hintEnabled="true"
-
-                    app:startIconDrawable="@drawable/ic_person">
+                    app:startIconDrawable="@drawable/ic_person"
+                    app:boxStrokeColor="#3498DB"
+                    app:hintTextColor="#3498DB">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/bettorNameInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Tên người cược"
+                        android:textColor="#2C3E50"
+                        android:textColorHint="#7F8C8D"
                         android:inputType="textPersonName"
                         android:maxLines="1" />
 
@@ -87,13 +92,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     app:hintEnabled="true"
-                    app:startIconDrawable="@drawable/ic_number">
+                    app:startIconDrawable="@drawable/ic_number"
+                    app:boxStrokeColor="#3498DB"
+                    app:hintTextColor="#3498DB">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/bettingNumberInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Số cược (0-99)"
+                        android:textColor="#2C3E50"
+                        android:textColorHint="#7F8C8D"
                         android:inputType="number"
                         android:maxLines="1" />
 
@@ -105,13 +114,17 @@
                     android:layout_marginBottom="16dp"
                     app:hintEnabled="true"
                     app:startIconDrawable="@drawable/ic_money"
-                    app:suffixText="VNĐ">
+                    app:suffixText="VNĐ"
+                    app:boxStrokeColor="#3498DB"
+                    app:hintTextColor="#3498DB">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/bettingAmountInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Số tiền cược (tối thiểu 1,000)"
+                        android:textColor="#2C3E50"
+                        android:textColorHint="#7F8C8D"
                         android:inputType="numberDecimal"
                         android:maxLines="1" />
 
@@ -121,10 +134,11 @@
                     android:id="@+id/submitButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text=" Xác Nhận Cược"
-                    android:textColor="@android:color/black"
+                    android:text="Xác Nhận Cược"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    android:backgroundTint="#E74C3C"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>
@@ -137,7 +151,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,10 +163,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🔧 Chức Năng"
+                    android:text="Chức Năng"
                     android:textSize="18sp"
                     android:textStyle="bold"
-
+                    android:textColor="#2C3E50"
                     android:layout_marginBottom="12dp" />
 
                 <LinearLayout
@@ -167,10 +182,19 @@
                         android:layout_weight="1"
                         android:layout_marginEnd="8dp"
                         android:text="Danh Sách"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:backgroundTint="#3498DB" />
 
-                        android:textSize="14sp" />
-
-
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/batchInputButton"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="Nhập Hàng Loạt"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:backgroundTint="#2ECC71" />
 
                 </LinearLayout>
 
@@ -179,8 +203,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:text="Danh Sách Đại Lý"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:backgroundTint="#3498DB" />
 
             </LinearLayout>
 
@@ -191,7 +216,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -205,7 +231,7 @@
                     android:text="📊 Thống Kê"
                     android:textSize="18sp"
                     android:textStyle="bold"
-
+                    android:textColor="#2C3E50"
                     android:layout_marginBottom="12dp" />
 
                 <LinearLayout
@@ -227,21 +253,21 @@
                             android:text="0"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                            />
+                            android:textColor="#E67E22" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Số cược"
                             android:textSize="12sp"
-                            />
+                            android:textColor="#7F8C8D" />
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-
+                        android:background="#ECF0F1"
                         android:layout_marginHorizontal="16dp" />
 
                     <LinearLayout
@@ -258,14 +284,14 @@
                             android:text="0"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                           />
+                            android:textColor="#E67E22" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tổng tiền"
                             android:textSize="12sp"
-                            />
+                            android:textColor="#7F8C8D" />
 
                     </LinearLayout>
 
